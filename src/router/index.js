@@ -1,67 +1,116 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
-// 1. Import Layouts
-import CustomerLayout from '@/layouts/CustomerLayout.vue'
-// import AdminLayout from '@/layouts/AdminLayout.vue' // Disimpan dulu untuk nanti
-
-// 2. Import Views (Hanya HomeView yang diaktifkan)
-import HomeView from '../views/HomeView.vue'
-
-// View lainnya dikomentari dulu agar tidak error "File Not Found"
-// import MenuView from '../views/MenuView.vue'
-// import MenuDetailView from '../views/MenuDetailView.vue'
-// import AdminDashboard from '@/views/admin/DashboardView.vue'
-// import MenuManagementView from '@/views/admin/MenuManagementView.vue'
-// import OrderManagementView from '@/views/admin/OrderManagementView.vue'
+import { useAuthStore } from '@/stores/auth'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      return { el: to.hash, behavior: 'smooth' }
+    }
+    if (savedPosition) {
+      return savedPosition
+    }
+    return { top: 0, behavior: 'smooth' }
+  },
   routes: [
-    // --- RUTE PELANGGAN (Group Customer) ---
+    // ===== Public Routes =====
     {
       path: '/',
-      component: CustomerLayout, // Layout utama (Navbar + Footer)
+      component: () => import('@/layouts/PublicLayout.vue'),
       children: [
         {
-          path: '', // URL: / (Halaman Utama)
+          path: '',
           name: 'home',
-          component: HomeView,
-        },
-        // Rute Menu dinonaktifkan sementara
-        /*
-        {
-          path: 'menu',
-          name: 'menu',
-          component: MenuView
+          component: () => import('@/views/HomeView.vue'),
+          meta: { title: 'Beranda — RT 27' },
         },
         {
-          path: 'menu/:id',
-          name: 'menu-detail',
-          component: MenuDetailView
+          path: 'profil',
+          name: 'profil',
+          component: () => import('@/views/ProfileView.vue'),
+          meta: { title: 'Profil — RT 27' },
         },
-        */
-      ]
+        {
+          path: 'artikel',
+          name: 'artikel',
+          component: () => import('@/views/ArticleListView.vue'),
+          meta: { title: 'Artikel — RT 27' },
+        },
+        {
+          path: 'artikel/:slug',
+          name: 'artikel-detail',
+          component: () => import('@/views/ArticleDetailView.vue'),
+          meta: { title: 'Artikel — RT 27' },
+        },
+        {
+          path: 'modul',
+          name: 'modul',
+          component: () => import('@/views/ModuleView.vue'),
+          meta: { title: 'Modul Pelatihan — RT 27' },
+        },
+      ],
     },
 
-    // --- RUTE ADMIN (Group Admin) ---
-    // Dinonaktifkan sementara sampai folder views/admin dibuat
-    /*
+    // ===== Admin Routes =====
+    {
+      path: '/admin/login',
+      name: 'admin-login',
+      component: () => import('@/views/admin/LoginView.vue'),
+      meta: { title: 'Login Admin — RT 27' },
+    },
     {
       path: '/admin',
-      component: AdminLayout,
+      component: () => import('@/layouts/AdminLayout.vue'),
+      meta: { requiresAuth: true },
       children: [
-        { path: '', name: 'admin-dashboard', component: AdminDashboard },
-        { path: 'menu', name: 'admin-menu', component: MenuManagementView },
-        { path: 'orders', name: 'admin-orders', component: OrderManagementView }
-      ]
-    }
-    */
+        {
+          path: '',
+          name: 'admin-dashboard',
+          component: () => import('@/views/admin/DashboardView.vue'),
+          meta: { title: 'Dashboard — Admin RT 27' },
+        },
+        {
+          path: 'artikel',
+          name: 'admin-artikel',
+          component: () => import('@/views/admin/ArticleManageView.vue'),
+          meta: { title: 'Kelola Artikel — Admin RT 27' },
+        },
+        {
+          path: 'modul',
+          name: 'admin-modul',
+          component: () => import('@/views/admin/ModuleManageView.vue'),
+          meta: { title: 'Kelola Modul — Admin RT 27' },
+        },
+        {
+          path: 'profil',
+          name: 'admin-profil',
+          component: () => import('@/views/admin/ProfileManageView.vue'),
+          meta: { title: 'Kelola Profil — Admin RT 27' },
+        },
+      ],
+    },
+
+    // ===== 404 =====
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('@/views/NotFoundView.vue'),
+      meta: { title: 'Halaman Tidak Ditemukan — RT 27' },
+    },
   ],
-  // Scroll behavior agar saat pindah halaman selalu mulai dari atas
-  scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) return savedPosition
-    if (to.hash) return { el: to.hash, behavior: 'smooth', top: 0 }
-    return { top: 0 }
+})
+
+// Navigation Guard
+router.beforeEach(async (to) => {
+  // Update page title
+  document.title = to.meta.title || 'RT 27'
+
+  // Check auth for admin routes
+  if (to.meta.requiresAuth) {
+    const authStore = useAuthStore()
+    if (!authStore.isAuthenticated) {
+      return { name: 'admin-login', query: { redirect: to.fullPath } }
+    }
   }
 })
 

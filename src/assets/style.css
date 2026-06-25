@@ -1,68 +1,255 @@
 @import 'tailwindcss';
 @plugin "daisyui";
 
+/* ===== Custom Fonts ===== */
 @font-face {
   font-family: 'Market Deco';
   src: url('/fonts/Market_Deco.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+  font-display: swap;
 }
 
+/* ===== Theme Configuration ===== */
 @theme {
-  /* Mengganti font bawaan 'font-sans' dengan Pilihan Anda */
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  
-  /* Mengganti font bawaan 'font-serif' dengan Rekomendasi Saya */
-  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Playfair Display', ui-serif, Georgia, serif;
+  --font-display: 'Market Deco', sans-serif;
+
+  --color-rt-primary: #354F38;
+  --color-rt-primary-light: #3d5b40;
+  --color-rt-secondary: #5F7161;
+  --color-rt-accent: #A8C5A0;
+  --color-rt-accent-light: #c5dbbf;
+  --color-rt-dark: #1F291F;
+  --color-rt-light: #F4F7F5;
+  --color-rt-light-alt: #EDF2EE;
+  --color-rt-cream: #FAFCFA;
 }
 
+/* ===== Base Styles ===== */
 @layer base {
-  h1 {
-    font-family: var(--font-potta);
-    letter-spacing: 0.05em; 
+  html {
+    scroll-behavior: smooth;
   }
 
   body {
-    font-family: var(--font-poppins);
-    color: #4A2C2A;
-    background-color: #FFF6E0;
+    font-family: var(--font-sans);
+    background-color: var(--color-rt-light);
+    color: var(--color-rt-dark);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  button, 
-  .btn, 
-  nav a, 
-  .menu-item {
-    font-family: var(--font-market);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    color: var(--color-rt-dark);
+  }
+
+  ::selection {
+    background-color: var(--color-rt-accent);
+    color: var(--color-rt-dark);
   }
 }
 
-html, body {
-  width: 100%;
-  overflow-x: hidden;
-  margin: 0;
-  padding: 0;
-  scroll-behavior: smooth;
-  font-family: var(--font-sans); /* Default font pakai Jakarta Sans */
-  background-color: #F4F7F5; /* Background global default */
-  color: #1F291F; /* Warna teks default (Hitam Kehijauan) */
-}
-
-/* Opsional: Kustomisasi Scrollbar agar sesuai tema Army Green */
+/* ===== Custom Scrollbar ===== */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #F4F7F5;
+  background: var(--color-rt-light);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #354F38; /* Warna Army Green */
-  border-radius: 5px;
+  background: var(--color-rt-secondary);
+  border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #263a29;
+  background: var(--color-rt-primary);
+}
+
+/* ===== Utility Classes ===== */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.glass-dark {
+  background: rgba(31, 41, 31, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-rt-primary), var(--color-rt-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(53, 79, 56, 0.12);
+}
+
+.btn-primary-custom {
+  background: linear-gradient(135deg, var(--color-rt-primary), var(--color-rt-primary-light));
+  color: white;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-primary-custom:hover {
+  background: linear-gradient(135deg, var(--color-rt-primary-light), var(--color-rt-secondary));
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(53, 79, 56, 0.3);
+}
+
+/* ===== Animations ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 500px;
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-slide-down {
+  animation: slideDown 0.3s ease-out forwards;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 3s ease-in-out infinite;
+}
+
+/* Staggered animation delays */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+/* ===== Article Content Styling ===== */
+.article-content {
+  line-height: 1.8;
+  color: var(--color-rt-dark);
+}
+
+.article-content h1,
+.article-content h2,
+.article-content h3 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.article-content p {
+  margin-bottom: 1em;
+}
+
+.article-content img {
+  border-radius: 12px;
+  margin: 1.5em 0;
+  max-width: 100%;
+}
+
+.article-content ul,
+.article-content ol {
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.article-content blockquote {
+  border-left: 4px solid var(--color-rt-accent);
+  padding-left: 1em;
+  margin: 1.5em 0;
+  color: var(--color-rt-secondary);
+  font-style: italic;
+}
+
+.article-content code {
+  background: var(--color-rt-light-alt);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.article-content pre {
+  background: var(--color-rt-dark);
+  color: var(--color-rt-light);
+  padding: 1em;
+  border-radius: 12px;
+  overflow-x: auto;
+  margin: 1.5em 0;
+}
+
+.article-content a {
+  color: var(--color-rt-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ===== Page Transitions ===== */
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.3s ease;
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-12px);
+}
+
+/* ===== Hide Scrollbar Utility ===== */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

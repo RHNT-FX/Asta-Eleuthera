@@ -1,35 +1,19 @@
 <script setup>
-import HeroSection from '@/components/HeroSection.vue'
-import CategorySection from '@/components/CategorySection.vue'
-import AboutSection from '@/components/AboutSection.vue'
-import ProductSection from '@/components/ProductSection.vue'
-import TestimonialSection from '@/components/TestimonialSection.vue'
-import LogbookSection from '@/components/LogbookSection.vue'
-import FaqSection from '@/components/FaqSection.vue'
-import CtaSection from '@/components/CtaSection.vue'
-
-// Catatan: Navbar dan Footer sudah diurus otomatis oleh src/layouts/CustomerLayout.vue
+import HeroSection from '@/components/home/HeroSection.vue'
+import AboutPreview from '@/components/home/AboutPreview.vue'
+import LatestArticles from '@/components/home/LatestArticles.vue'
+import ModulePreview from '@/components/home/ModulePreview.vue'
+import MapSection from '@/components/home/MapSection.vue'
+import CtaSection from '@/components/home/CtaSection.vue'
 </script>
 
 <template>
-  <div class="bg-base-100 font-sans">
-    
+  <div class="flex flex-col min-h-screen">
     <HeroSection />
-
-    <CategorySection />
-
-    <AboutSection /> 
-
-    <ProductSection />
-
-    <TestimonialSection />
-
-    <LogbookSection />
-
-    <FaqSection />
-
+    <AboutPreview />
+    <LatestArticles />
+    <ModulePreview />
+    <MapSection />
     <CtaSection />
-    
   </div>
-
 </template>

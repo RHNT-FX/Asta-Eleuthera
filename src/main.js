@@ -1,48 +1,44 @@
 import './assets/style.css'
 
 import { createApp } from 'vue'
-import { createPinia } from 'pinia' // 1. Import Pinia
+import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
+import { useAuthStore } from './stores/auth'
 
 const app = createApp(App)
-const pinia = createPinia() // 2. Buat instance Pinia
+const pinia = createPinia()
 
-// --- DIRECTIVE ANIMASI SCROLL (KODE LAMA TETAP ADA) ---
+// Scroll animation directive
 const animateDirective = {
   mounted: (el) => {
-    el.classList.add('transition-all', 'duration-1000', 'ease-out')
-    
-    const hideElement = () => {
-      el.classList.remove('opacity-100', 'translate-y-0') 
-      el.classList.add('opacity-0', 'translate-y-12')    
-    }
-    
-    const showElement = () => {
-      el.classList.remove('opacity-0', 'translate-y-12')  
-      el.classList.add('opacity-100', 'translate-y-0')    
-    }
+    el.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+    el.style.opacity = '0'
+    el.style.transform = 'translateY(24px)'
 
-    hideElement()
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          showElement()
-        } else {
-          hideElement()
-        }
-      })
-    }, {
-      threshold: 0.1
-    })
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            el.style.opacity = '1'
+            el.style.transform = 'translateY(0)'
+          }
+        })
+      },
+      { threshold: 0.1 },
+    )
 
     observer.observe(el)
-  }
+  },
 }
 
 app.directive('animate', animateDirective)
 
-app.use(pinia) // 3. Gunakan Pinia sebelum Router
+app.use(pinia)
 app.use(router)
-app.mount('#app')
+
+// Initialize auth before mounting
+const authStore = useAuthStore()
+authStore.initialize().then(() => {
+  app.mount('#app')
+})

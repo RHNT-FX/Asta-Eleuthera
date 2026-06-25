@@ -1,95 +1,134 @@
 <script setup>
-import { ref } from 'vue'
-import { RouterLink, RouterView } from 'vue-router'
+import { ref, computed } from 'vue'
+import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
-const isSidebarOpen = ref(false)
+const router = useRouter()
+const route = useRoute()
+const authStore = useAuthStore()
+const sidebarOpen = ref(false)
 
-const adminLinks = [
-  { name: 'Dashboard', path: '/admin' },
-  { name: 'Manajemen Menu', path: '/admin/menu' },
-  { name: 'Pesanan Masuk', path: '/admin/orders' },
-  { name: 'Logout', path: '/' } 
+const menuItems = [
+  { name: 'Dashboard', icon: 'grid', route: 'admin-dashboard' },
+  { name: 'Artikel', icon: 'file-text', route: 'admin-artikel' },
+  { name: 'Modul', icon: 'download', route: 'admin-modul' },
+  { name: 'Profil RT', icon: 'users', route: 'admin-profil' },
 ]
+
+const currentRouteName = computed(() => route.name)
+
+async function handleLogout() {
+  await authStore.logout()
+  router.push({ name: 'admin-login' })
+}
 </script>
 
 <template>
-  <div class="min-h-screen w-full bg-gray-100 flex font-sans relative">
-    
-    <Transition name="fade">
-      <div 
-        v-if="isSidebarOpen" 
-        class="fixed inset-0 bg-black/50 z-30 lg:hidden"
-        @click="isSidebarOpen = false"
-      ></div>
-    </Transition>
-
-    <aside 
-      class="w-64 bg-[#C62E2E] text-white flex flex-col fixed h-full shadow-xl z-40 transition-transform duration-300 ease-in-out"
-      :class="isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
+  <div class="min-h-screen flex bg-[var(--color-rt-light-alt)]">
+    <!-- Sidebar -->
+    <aside
+      class="fixed inset-y-0 left-0 z-50 w-64 bg-[var(--color-rt-dark)] text-white transform transition-transform duration-300 lg:translate-x-0"
+      :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
     >
-      <div class="p-6 flex items-center justify-between lg:justify-center border-b border-white/10">
-        <h1 class="font-potta text-2xl tracking-widest">ADMIN</h1>
-        <button @click="isSidebarOpen = false" class="lg:hidden text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-          </svg>
-        </button>
+      <!-- Logo -->
+      <div class="h-16 flex items-center gap-3 px-6 border-b border-white/10">
+        <img src="/images/AE1.png" alt="Logo" class="w-8 h-8 rounded-lg" />
+        <div>
+          <h1 class="text-sm font-bold tracking-wide">RT 27 Admin</h1>
+          <p class="text-[10px] text-white/50">Panel Pengelola</p>
+        </div>
       </div>
 
-      <nav class="flex-grow p-4 space-y-2 overflow-y-auto">
-        <RouterLink 
-          v-for="link in adminLinks" 
-          :key="link.path" 
-          :to="link.path"
-          @click="isSidebarOpen = false" 
-          class="block px-4 py-3 rounded-lg font-market text-sm tracking-widest transition-colors hover:bg-white/10"
-          active-class="bg-white text-[#C62E2E]"
+      <!-- Navigation -->
+      <nav class="mt-6 px-3 space-y-1">
+        <RouterLink
+          v-for="item in menuItems"
+          :key="item.route"
+          :to="{ name: item.route }"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200"
+          :class="
+            currentRouteName === item.route
+              ? 'bg-[var(--color-rt-primary)] text-white shadow-lg shadow-[var(--color-rt-primary)]/30'
+              : 'text-white/60 hover:text-white hover:bg-white/5'
+          "
+          @click="sidebarOpen = false"
         >
-          {{ link.name }}
+          <!-- Icons -->
+          <svg v-if="item.icon === 'grid'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+          <svg v-else-if="item.icon === 'file-text'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <svg v-else-if="item.icon === 'download'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <svg v-else-if="item.icon === 'users'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span>{{ item.name }}</span>
         </RouterLink>
       </nav>
 
-      <div class="p-4 text-center text-xs font-market opacity-50">
-        YUMMIX ADMIN v1.0
+      <!-- Bottom Actions -->
+      <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10">
+        <RouterLink
+          :to="{ name: 'home' }"
+          class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all mb-2"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          <span>Lihat Website</span>
+        </RouterLink>
+        <button
+          @click="handleLogout"
+          class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-red-400/70 hover:text-red-400 hover:bg-red-500/10 transition-all"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+          <span>Keluar</span>
+        </button>
       </div>
     </aside>
 
-    <main class="flex-1 lg:ml-64 p-4 md:p-8 overflow-y-auto w-full">
-      
-      <header class="mb-8 flex justify-between items-center bg-white p-4 rounded-xl shadow-sm lg:bg-transparent lg:shadow-none lg:p-0">
-        
-        <div class="flex items-center gap-4">
-          <button @click="isSidebarOpen = true" class="lg:hidden text-[#3E2723]">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-7 h-7">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-            </svg>
-          </button>
+    <!-- Mobile overlay -->
+    <div
+      v-if="sidebarOpen"
+      class="fixed inset-0 bg-black/50 z-40 lg:hidden"
+      @click="sidebarOpen = false"
+    />
 
-          <h2 class="font-potta text-[#3E2723] text-xl md:text-3xl">
-            Control Panel
-          </h2>
-        </div>
+    <!-- Main Content -->
+    <div class="flex-1 lg:ml-64">
+      <!-- Top Bar -->
+      <header class="h-16 bg-white/80 backdrop-blur-lg border-b border-gray-200/50 flex items-center justify-between px-6 sticky top-0 z-30">
+        <button
+          @click="sidebarOpen = !sidebarOpen"
+          class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
 
         <div class="flex items-center gap-3">
-           <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#3E2723] text-white flex items-center justify-center font-bold text-xs md:text-base">A</div>
-           <span class="font-market text-[#3E2723] hidden md:inline">Admin User</span>
+          <div class="w-8 h-8 rounded-full bg-[var(--color-rt-primary)] flex items-center justify-center text-white text-sm font-bold">
+            A
+          </div>
+          <span class="text-sm font-medium text-[var(--color-rt-dark)]">Admin</span>
         </div>
       </header>
 
-      <RouterView v-slot="{ Component }">
-        <Transition name="page" mode="out-in">
-          <component :is="Component" />
-        </Transition>
-      </RouterView>
-    </main>
-
+      <!-- Page Content -->
+      <main class="p-6">
+        <RouterView v-slot="{ Component }">
+          <Transition name="page" mode="out-in">
+            <component :is="Component" />
+          </Transition>
+        </RouterView>
+      </main>
+    </div>
   </div>
 </template>
-
-<style scoped>
-.page-enter-active, .page-leave-active { transition: opacity 0.3s ease; }
-.page-enter-from, .page-leave-to { opacity: 0; }
-
-.fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
-.fade-enter-from, .fade-leave-to { opacity: 0; }
-</style>
