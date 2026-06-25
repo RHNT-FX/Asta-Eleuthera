@@ -1,8 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useProfileStore } from '@/stores/profile'
+import { useToastStore } from '@/stores/toast'
 
 const profileStore = useProfileStore()
+const toast = useToastStore()
 const activeTab = ref('visiMisi')
 const saving = ref(false)
 
@@ -12,6 +14,10 @@ const sejarah = ref({ content: '', established_year: '' })
 const pengurus = ref([])
 const kontak = ref({ whatsapp: '', email: '', phone: '', address: '', lat: -1.2654, lng: 116.8312 })
 const gallery = ref([])
+
+// Gallery Upload state
+const galleryFile = ref(null)
+const galleryCaption = ref('')
 
 onMounted(async () => {
   await Promise.all([
@@ -24,7 +30,7 @@ onMounted(async () => {
   sejarah.value = JSON.parse(JSON.stringify(profileStore.getProfileValue('sejarah') || { content: '', established_year: '' }))
   pengurus.value = JSON.parse(JSON.stringify(profileStore.getProfileValue('pengurus') || []))
   kontak.value = JSON.parse(JSON.stringify(profileStore.getProfileValue('kontak') || { whatsapp: '', email: '', phone: '', address: '', lat: -1.2654, lng: 116.8312 }))
-  gallery.value = JSON.parse(JSON.stringify(profileStore.gallery || []))
+  gallery.value = profileStore.gallery || []
 })
 
 // Misi Actions
@@ -36,37 +42,81 @@ function addPengurus() { pengurus.value.push({ nama: '', jabatan: '', foto: '' }
 function removePengurus(index) { pengurus.value.splice(index, 1) }
 
 // Save Handlers
-async function saveVisiMisi() {
+async function handleSaveProfile(key, data, successMessage) {
   saving.value = true
-  await new Promise(r => setTimeout(r, 500))
-  // Save to store/supabase logic here
-  console.log('Saved Visi Misi', visiMisi.value)
-  saving.value = false
-  alert('Visi Misi berhasil disimpan!')
+  try {
+    const result = await profileStore.updateProfile(key, data)
+    if (result.success) {
+      toast.showToast(successMessage, 'success')
+    } else {
+      toast.showToast('Gagal menyimpan: ' + (result.error || 'Unknown error'), 'error')
+    }
+  } catch (error) {
+    toast.showToast('Terjadi kesalahan saat menyimpan', 'error')
+  } finally {
+    saving.value = false
+  }
+}
+
+async function saveVisiMisi() {
+  await handleSaveProfile('visi_misi', visiMisi.value, 'Visi Misi berhasil disimpan!')
 }
 
 async function saveSejarah() {
-  saving.value = true
-  await new Promise(r => setTimeout(r, 500))
-  console.log('Saved Sejarah', sejarah.value)
-  saving.value = false
-  alert('Sejarah berhasil disimpan!')
+  await handleSaveProfile('sejarah', sejarah.value, 'Sejarah berhasil disimpan!')
 }
 
 async function savePengurus() {
-  saving.value = true
-  await new Promise(r => setTimeout(r, 500))
-  console.log('Saved Pengurus', pengurus.value)
-  saving.value = false
-  alert('Pengurus berhasil disimpan!')
+  await handleSaveProfile('pengurus', pengurus.value, 'Struktur Pengurus berhasil disimpan!')
 }
 
 async function saveKontak() {
+  await handleSaveProfile('kontak', kontak.value, 'Kontak & Alamat berhasil disimpan!')
+}
+
+// Gallery Handlers
+function handleGalleryFile(event) {
+  const file = event.target.files[0]
+  if (file) {
+    galleryFile.value = file
+  }
+}
+
+async function uploadGallery() {
+  if (!galleryFile.value) {
+    toast.showToast('Pilih foto terlebih dahulu', 'error')
+    return
+  }
+  
   saving.value = true
-  await new Promise(r => setTimeout(r, 500))
-  console.log('Saved Kontak', kontak.value)
-  saving.value = false
-  alert('Kontak berhasil disimpan!')
+  try {
+    const result = await profileStore.addGalleryImage(galleryFile.value, galleryCaption.value)
+    if (result.success) {
+      toast.showToast('Foto berhasil ditambahkan ke galeri', 'success')
+      galleryFile.value = null
+      galleryCaption.value = ''
+      document.getElementById('galleryInput').value = ''
+      gallery.value = profileStore.gallery
+    } else {
+      toast.showToast('Gagal upload: ' + (result.error || 'Unknown error'), 'error')
+    }
+  } catch (error) {
+    toast.showToast('Terjadi kesalahan saat upload foto', 'error')
+  } finally {
+    saving.value = false
+  }
+}
+
+async function deleteGallery(id) {
+  if (!confirm('Apakah Anda yakin ingin menghapus foto ini?')) return
+  
+  const result = await profileStore.deleteGalleryImage(id)
+  if (result.success) {
+    toast.showToast('Foto berhasil dihapus', 'success')
+    gallery.value = profileStore.gallery
+  } else {
+    toast.showToast('Gagal menghapus foto', 'error')
+  }
 }
 </script>
 
@@ -224,12 +274,45 @@ async function saveKontak() {
       </form>
 
       <!-- Galeri -->
-      <div v-if="activeTab === 'galeri'" class="space-y-6 text-center py-10">
-        <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
-          <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      <div v-if="activeTab === 'galeri'" class="space-y-8">
+        <!-- Upload Form -->
+        <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+          <h3 class="font-bold text-[var(--color-rt-dark)] text-lg mb-4">Upload Foto Baru</h3>
+          <form @submit.prevent="uploadGallery" class="flex flex-col sm:flex-row items-end gap-4">
+            <div class="flex-1 w-full">
+              <label class="block text-sm font-bold text-gray-700 mb-1">Pilih Foto</label>
+              <input type="file" id="galleryInput" @change="handleGalleryFile" accept="image/*" class="w-full rounded-xl border-gray-200 bg-white px-4 py-2 border file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[var(--color-rt-primary)]/10 file:text-[var(--color-rt-primary)]" required />
+            </div>
+            <div class="flex-1 w-full">
+              <label class="block text-sm font-bold text-gray-700 mb-1">Keterangan (Opsional)</label>
+              <input v-model="galleryCaption" type="text" class="w-full rounded-xl border-gray-200 focus:border-[var(--color-rt-primary)] px-4 py-2 border bg-white" placeholder="Contoh: Kerja bakti 2024" />
+            </div>
+            <button type="submit" :disabled="saving" class="w-full sm:w-auto bg-[var(--color-rt-primary)] text-white px-6 py-2.5 rounded-xl font-medium hover:bg-[var(--color-rt-primary-light)] transition-colors shadow-sm disabled:opacity-50">
+              {{ saving ? 'Mengunggah...' : 'Upload Foto' }}
+            </button>
+          </form>
         </div>
-        <h3 class="text-xl font-bold text-[var(--color-rt-dark)]">Manajemen Galeri</h3>
-        <p class="text-gray-500">Fitur upload dan hapus foto galeri akan segera hadir pada update berikutnya.</p>
+
+        <!-- Gallery Grid -->
+        <div>
+          <h3 class="font-bold text-[var(--color-rt-dark)] text-lg border-b pb-2 mb-4">Koleksi Foto</h3>
+          
+          <div v-if="gallery.length === 0" class="text-center py-10 text-gray-500 bg-gray-50 rounded-2xl border border-dashed border-gray-300">
+            Belum ada foto di galeri. Upload foto pertama Anda di atas.
+          </div>
+          
+          <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            <div v-for="item in gallery" :key="item.id" class="group relative rounded-xl overflow-hidden aspect-square bg-gray-100 border border-gray-200">
+              <img :src="item.image_url" :alt="item.caption" class="w-full h-full object-cover" />
+              <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4">
+                <p class="text-white text-xs text-center line-clamp-2 mb-3">{{ item.caption || 'Tanpa keterangan' }}</p>
+                <button @click="deleteGallery(item.id)" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition-colors" title="Hapus Foto">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
     </div>

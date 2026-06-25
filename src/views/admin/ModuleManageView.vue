@@ -1,12 +1,15 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useModuleStore } from '@/stores/module'
+import { useToastStore } from '@/stores/toast'
 
 const moduleStore = useModuleStore()
+const toast = useToastStore()
 
 // State
 const modules = ref([])
 const loading = ref(true)
+const saving = ref(false)
 const isModalOpen = ref(false)
 const isDeleteModalOpen = ref(false)
 const selectedModule = ref(null)
@@ -21,6 +24,7 @@ const formData = ref({
   file_size: '',
 })
 const fileInput = ref(null)
+const selectedFile = ref(null)
 
 onMounted(async () => {
   await loadModules()
@@ -51,6 +55,7 @@ function openModal(mod = null) {
       file_size: '',
     }
   }
+  selectedFile.value = null
   isModalOpen.value = true
 }
 
@@ -59,14 +64,59 @@ function closeModal() {
   if (fileInput.value) {
     fileInput.value.value = ''
   }
+  selectedFile.value = null
+}
+
+function handleFileChange(event) {
+  const file = event.target.files[0]
+  if (file) {
+    selectedFile.value = file
+  }
 }
 
 async function saveModule() {
-  console.log('Saving module:', formData.value)
-  // Simulate network
-  await new Promise(r => setTimeout(r, 500))
-  closeModal()
-  await loadModules()
+  saving.value = true
+  try {
+    let result
+    if (formData.value.id) {
+      // Update existing module
+      const { id, created_at, download_count, ...updates } = formData.value
+      result = await moduleStore.updateModule(id, updates)
+    } else {
+      // Create new module
+      if (!selectedFile.value && !formData.value.file_url) {
+        toast.showToast('Silakan pilih file PDF atau masukkan URL file.', 'error')
+        saving.value = false
+        return
+      }
+      
+      const { id, ...newModule } = formData.value
+      
+      // If there's a file, we use createModule with file, else we just use update logic but as insert
+      if (selectedFile.value) {
+        result = await moduleStore.createModule(newModule, selectedFile.value)
+      } else {
+        // Fallback for manual URL entry without actual file upload
+        // In a real scenario, you might want a separate store method for this
+        // For now we'll simulate an error asking for file
+        toast.showToast('Upload file saat ini diwajibkan.', 'error')
+        saving.value = false
+        return
+      }
+    }
+
+    if (result.success) {
+      toast.showToast(formData.value.id ? 'Modul berhasil diperbarui!' : 'Modul berhasil diupload!', 'success')
+      closeModal()
+      await loadModules()
+    } else {
+      toast.showToast('Gagal menyimpan: ' + (result.error || 'Terjadi kesalahan'), 'error')
+    }
+  } catch (error) {
+    toast.showToast('Gagal menyimpan modul', 'error')
+  } finally {
+    saving.value = false
+  }
 }
 
 function confirmDelete(mod) {
@@ -76,9 +126,12 @@ function confirmDelete(mod) {
 
 async function deleteModule() {
   if (!selectedModule.value) return
-  console.log('Deleting module:', selectedModule.value.id)
-  // Simulate network
-  await new Promise(r => setTimeout(r, 500))
+  const result = await moduleStore.deleteModule(selectedModule.value.id)
+  if (result.success) {
+    toast.showToast('Modul berhasil dihapus!', 'success')
+  } else {
+    toast.showToast('Gagal menghapus modul', 'error')
+  }
   isDeleteModalOpen.value = false
   selectedModule.value = null
   await loadModules()
@@ -221,10 +274,15 @@ async function deleteModule() {
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">File PDF (atau URL File)</label>
-                <!-- Placeholder for actual file upload to storage -->
-                <input v-model="formData.file_url" type="url" placeholder="https://link-ke-file-pdf.com" class="w-full rounded-xl border-gray-200 focus:border-[var(--color-rt-primary)] focus:ring-[var(--color-rt-primary)]/20 shadow-sm px-4 py-2 border mb-2" />
-                <p class="text-xs text-gray-500">Catatan: Untuk saat ini masukkan URL file secara manual jika tidak menggunakan storage terintegrasi.</p>
+                <label class="block text-sm font-medium text-gray-700 mb-1">File PDF Modul</label>
+                <input 
+                  type="file" 
+                  ref="fileInput" 
+                  @change="handleFileChange" 
+                  accept=".pdf,.doc,.docx"
+                  class="w-full rounded-xl border-gray-200 focus:border-[var(--color-rt-primary)] focus:ring-[var(--color-rt-primary)]/20 shadow-sm px-4 py-2 border mb-2 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[var(--color-rt-primary)]/10 file:text-[var(--color-rt-primary)] hover:file:bg-[var(--color-rt-primary)]/20 transition-colors"
+                />
+                <p class="text-xs text-gray-500">Pilih file dari komputer Anda. Jika sedang edit, biarkan kosong untuk tidak mengubah file.</p>
               </div>
               
               <div v-if="formData.id">
@@ -234,8 +292,8 @@ async function deleteModule() {
             </div>
             
             <div class="bg-gray-50 px-4 py-4 sm:px-6 sm:flex sm:flex-row-reverse border-t border-gray-100">
-              <button type="submit" class="w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-6 py-2.5 bg-[var(--color-rt-primary)] text-base font-medium text-white hover:bg-[var(--color-rt-primary-light)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-rt-primary)] sm:ml-3 sm:w-auto sm:text-sm transition-colors">
-                Simpan
+              <button type="submit" :disabled="saving" class="w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-6 py-2.5 bg-[var(--color-rt-primary)] text-base font-medium text-white hover:bg-[var(--color-rt-primary-light)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-rt-primary)] sm:ml-3 sm:w-auto sm:text-sm transition-colors disabled:opacity-50">
+                {{ saving ? 'Menyimpan...' : 'Simpan' }}
               </button>
               <button type="button" @click="closeModal" class="mt-3 w-full inline-flex justify-center rounded-xl border border-gray-300 shadow-sm px-6 py-2.5 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors">
                 Batal

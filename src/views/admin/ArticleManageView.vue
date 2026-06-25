@@ -1,12 +1,15 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useArticleStore } from '@/stores/article'
+import { useToastStore } from '@/stores/toast'
 
 const articleStore = useArticleStore()
+const toast = useToastStore()
 
 // State
 const articles = ref([])
 const loading = ref(true)
+const saving = ref(false)
 const isModalOpen = ref(false)
 const isDeleteModalOpen = ref(false)
 const selectedArticle = ref(null)
@@ -29,10 +32,7 @@ onMounted(async () => {
 async function loadArticles() {
   loading.value = true
   try {
-    // In a real app, admin fetches ALL articles including drafts.
-    // Assuming articleStore.fetchArticles has a param for admin or we just fetch all.
-    // For now we use fetchArticles and handle it.
-    await articleStore.fetchArticles({ limit: 100 }) 
+    await articleStore.fetchAllArticles()
     articles.value = articleStore.articles
   } catch (error) {
     console.error(error)
@@ -63,12 +63,29 @@ function closeModal() {
 }
 
 async function saveArticle() {
-  // In a real app, you'd call a store action to save to Supabase
-  console.log('Saving article:', formData.value)
-  // Simulate network
-  await new Promise(r => setTimeout(r, 500))
-  closeModal()
-  await loadArticles()
+  saving.value = true
+  try {
+    let result
+    if (formData.value.id) {
+      const { id, created_at, slug, views, author_name, ...updates } = formData.value
+      result = await articleStore.updateArticle(id, updates)
+    } else {
+      const { id, ...newArticle } = formData.value
+      result = await articleStore.createArticle(newArticle)
+    }
+
+    if (result.success) {
+      toast.showToast(formData.value.id ? 'Artikel berhasil diperbarui!' : 'Artikel berhasil ditambahkan!', 'success')
+      closeModal()
+      await loadArticles()
+    } else {
+      toast.showToast('Gagal menyimpan: ' + (result.error || 'Terjadi kesalahan'), 'error')
+    }
+  } catch (error) {
+    toast.showToast('Gagal menyimpan artikel', 'error')
+  } finally {
+    saving.value = false
+  }
 }
 
 function confirmDelete(article) {
@@ -78,9 +95,12 @@ function confirmDelete(article) {
 
 async function deleteArticle() {
   if (!selectedArticle.value) return
-  console.log('Deleting article:', selectedArticle.value.id)
-  // Simulate network
-  await new Promise(r => setTimeout(r, 500))
+  const result = await articleStore.deleteArticle(selectedArticle.value.id)
+  if (result.success) {
+    toast.showToast('Artikel berhasil dihapus!', 'success')
+  } else {
+    toast.showToast('Gagal menghapus artikel', 'error')
+  }
   isDeleteModalOpen.value = false
   selectedArticle.value = null
   await loadArticles()
