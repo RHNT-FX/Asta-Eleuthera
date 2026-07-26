@@ -17,6 +17,7 @@
       <div class="p-6 bg-white rounded shadow-sm border-l-4 border-blue-500">
         <h3 class="text-gray-500 text-sm font-semibold uppercase">Total Warga Terdaftar</h3>
         <p class="text-3xl font-bold mt-2">{{ koperasiStore.warga.length }}</p>
+      </div>
     </div>
 
     <!-- Tabel Peringkat SHU -->
