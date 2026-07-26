@@ -19,7 +19,7 @@ const saving = ref(false)
 const createForm = ref({
   warga_id: '',
   jumlah_pinjaman: 0,
-  bunga_persen: 0,
+  bunga_persen: 10, // Default 10% sesuai "setiap 1 juta bunga 100k"
   tenor_bulan: 1,
 })
 
@@ -44,7 +44,7 @@ async function loadData() {
 }
 
 function openCreateModal() {
-  createForm.value = { warga_id: '', jumlah_pinjaman: 0, bunga_persen: 0, tenor_bulan: 1 }
+  createForm.value = { warga_id: '', jumlah_pinjaman: 0, bunga_persen: 10, tenor_bulan: 1 }
   isCreateModalOpen.value = true
 }
 
@@ -200,11 +200,14 @@ function getWargaName(wargaId) {
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Jumlah Pinjaman (Rp)</label>
             <input v-model.number="createForm.jumlah_pinjaman" type="number" required min="1" class="w-full rounded-xl border-gray-200 px-4 py-2 border" />
+            <p v-if="createForm.jumlah_pinjaman > 0" class="text-xs text-purple-600 mt-1 font-medium">
+              + SHU/Laba Kas (10%): {{ formatRupiah(createForm.jumlah_pinjaman * 10 / 100) }}
+            </p>
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Bunga (%)</label>
-              <input v-model.number="createForm.bunga_persen" type="number" min="0" step="any" class="w-full rounded-xl border-gray-200 px-4 py-2 border" />
+              <label class="block text-sm font-medium text-gray-700 mb-1">Jasa/Bunga (%)</label>
+              <input v-model.number="createForm.bunga_persen" type="number" readonly class="w-full rounded-xl border-gray-200 bg-gray-50 px-4 py-2 border" />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Tenor (Bulan)</label>

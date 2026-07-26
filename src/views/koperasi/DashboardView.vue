@@ -10,6 +10,10 @@
         <h3 class="text-gray-500 text-sm font-semibold uppercase">Total Pinjaman Aktif</h3>
         <p class="text-3xl font-bold mt-2">{{ formatRupiah(totalPinjamanAktif) }}</p>
       </div>
+      <div class="p-6 bg-white rounded shadow-sm border-l-4 border-purple-500">
+        <h3 class="text-gray-500 text-sm font-semibold uppercase">Total Laba / SHU</h3>
+        <p class="text-3xl font-bold mt-2 text-purple-600">{{ formatRupiah(totalSHU) }}</p>
+      </div>
       <div class="p-6 bg-white rounded shadow-sm border-l-4 border-blue-500">
         <h3 class="text-gray-500 text-sm font-semibold uppercase">Total Warga Terdaftar</h3>
         <p class="text-3xl font-bold mt-2">{{ koperasiStore.warga.length }}</p>
@@ -35,8 +39,12 @@ const totalKas = computed(() => {
 
 const totalPinjamanAktif = computed(() => {
   return koperasiStore.pinjaman
-    .filter(p => p.status !== 'Lunas')
-    .reduce((sum, p) => sum + (Number(p.total_pinjaman) - (Number(p.terbayar) || 0)), 0)
+    .filter(p => p.status === 'aktif')
+    .reduce((sum, p) => sum + (Number(p.sisa_tagihan) || 0), 0)
+})
+
+const totalSHU = computed(() => {
+  return koperasiStore.pinjaman.reduce((sum, p) => sum + (Number(p.jumlah_pinjaman) * (Number(p.bunga_persen) || 0) / 100), 0)
 })
 
 const formatRupiah = (number) => {

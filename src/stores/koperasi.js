@@ -99,45 +99,53 @@ export const useKoperasiStore = defineStore('koperasi', {
       this.loading = true
       this.error = null
       try {
-        const { data, error } = await supabase.from('koperasi_pinjaman').insert([payload]).select(`*, koperasi_warga(nama)`)
+        const { data, error } = await supabase.from('koperasi_pinjaman').insert([payload]).select()
         if (error) throw error
         this.pinjaman.unshift(data[0])
-        return data[0]
+        return { success: true, data: data[0] }
       } catch (err) {
         this.error = err.message
-        throw err
+        return { success: false, error: err.message }
       } finally {
         this.loading = false
       }
     },
-    async addAngsuran(pinjamanId, nominal) {
+    async addAngsuran(payload) {
       this.loading = true
       this.error = null
       try {
-        const targetPinjaman = this.pinjaman.find(p => p.id === pinjamanId)
+        const targetPinjaman = this.pinjaman.find(p => p.id === payload.pinjaman_id)
         if (!targetPinjaman) throw new Error('Pinjaman not found')
         
-        const newTerbayar = (targetPinjaman.terbayar || 0) + nominal
+        // 1. Catat ke tabel angsuran
+        const { error: insertError } = await supabase.from('koperasi_angsuran').insert([{
+          pinjaman_id: payload.pinjaman_id,
+          jumlah_bayar: payload.jumlah_bayar
+        }])
+        if (insertError) throw insertError
+
+        // 2. Update sisa tagihan di tabel pinjaman
+        const newSisa = (targetPinjaman.sisa_tagihan || 0) - payload.jumlah_bayar
         let status = targetPinjaman.status
-        if (newTerbayar >= targetPinjaman.total_pinjaman) {
-            status = 'Lunas'
+        if (newSisa <= 0) {
+            status = 'lunas'
         }
         
-        const { data, error } = await supabase.from('koperasi_pinjaman')
-            .update({ terbayar: newTerbayar, status })
-            .eq('id', pinjamanId)
-            .select(`*, koperasi_warga(nama)`)
+        const { data, error: updateError } = await supabase.from('koperasi_pinjaman')
+            .update({ sisa_tagihan: newSisa, status })
+            .eq('id', payload.pinjaman_id)
+            .select()
             
-        if (error) throw error
+        if (updateError) throw updateError
         
-        const index = this.pinjaman.findIndex(p => p.id === pinjamanId)
+        const index = this.pinjaman.findIndex(p => p.id === payload.pinjaman_id)
         if (index !== -1) {
             this.pinjaman[index] = data[0]
         }
-        return data[0]
+        return { success: true, data: data[0] }
       } catch (err) {
         this.error = err.message
-        throw err
+        return { success: false, error: err.message }
       } finally {
         this.loading = false
       }
