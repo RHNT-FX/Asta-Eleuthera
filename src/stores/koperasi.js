@@ -42,7 +42,7 @@ export const useKoperasiStore = defineStore('koperasi', {
       this.loading = true
       this.error = null
       try {
-        const { data, error } = await supabase.from('koperasi_transaksi').select(`*, koperasi_warga(nama)`).order('created_at', { ascending: false })
+        const { data, error } = await supabase.from('koperasi_transaksi').select(`*, koperasi_warga(nama)`).order('tanggal', { ascending: false })
         if (error) throw error
         this.transaksi = data
       } catch (err) {
@@ -104,7 +104,7 @@ export const useKoperasiStore = defineStore('koperasi', {
       this.loading = true
       this.error = null
       try {
-        const { data, error } = await supabase.from('koperasi_pinjaman').select(`*, koperasi_warga(nama)`).order('created_at', { ascending: false })
+        const { data, error } = await supabase.from('koperasi_pinjaman').select(`*, koperasi_warga(nama)`).order('tanggal_pinjam', { ascending: false })
         if (error) throw error
         this.pinjaman = data
       } catch (err) {

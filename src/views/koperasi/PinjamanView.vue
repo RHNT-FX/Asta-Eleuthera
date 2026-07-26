@@ -127,6 +127,21 @@ function getWargaName(wargaId) {
   const w = wargaList.value.find(x => x.id === wargaId)
   return w ? w.nama : 'Unknown'
 }
+
+const formatInput = (num) => {
+  if (!num) return ''
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+}
+
+const handlePinjamanInput = (e) => {
+  let val = e.target.value.replace(/[^0-9]/g, '')
+  createForm.value.jumlah_pinjaman = val ? parseInt(val, 10) : ''
+}
+
+const handleAngsuranInput = (e) => {
+  let val = e.target.value.replace(/[^0-9]/g, '')
+  angsuranForm.value.jumlah_bayar = val ? parseInt(val, 10) : ''
+}
 </script>
 
 <template>
@@ -199,7 +214,7 @@ function getWargaName(wargaId) {
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Jumlah Pinjaman (Rp)</label>
-            <input v-model.number="createForm.jumlah_pinjaman" type="number" required min="1" class="w-full rounded-xl border-gray-200 px-4 py-2 border" />
+            <input type="text" :value="formatInput(createForm.jumlah_pinjaman)" @input="handlePinjamanInput" required class="w-full rounded-xl border-gray-200 px-4 py-2 border" />
             <p v-if="createForm.jumlah_pinjaman > 0" class="text-xs text-purple-600 mt-1 font-medium">
               + SHU/Laba Kas (10%): {{ formatRupiah(createForm.jumlah_pinjaman * 10 / 100) }}
             </p>
@@ -232,7 +247,7 @@ function getWargaName(wargaId) {
         <form @submit.prevent="handleAngsuran" class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Jumlah Bayar (Rp)</label>
-            <input v-model.number="angsuranForm.jumlah_bayar" type="number" required min="1" class="w-full rounded-xl border-gray-200 px-4 py-2 border" />
+            <input type="text" :value="formatInput(angsuranForm.jumlah_bayar)" @input="handleAngsuranInput" required class="w-full rounded-xl border-gray-200 px-4 py-2 border" />
           </div>
           <div class="pt-4 flex gap-3">
             <button type="button" @click="closeAngsuranModal" class="flex-1 px-4 py-2 rounded-xl border border-gray-200 font-medium text-gray-600 hover:bg-gray-50">Batal</button>

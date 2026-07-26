@@ -24,7 +24,7 @@
             <td colspan="5" class="text-center py-4">Belum ada transaksi.</td>
           </tr>
           <tr v-for="t in koperasiStore.transaksi" :key="t.id" class="hover">
-            <td>{{ formatDate(t.created_at) }}</td>
+            <td>{{ formatDate(t.tanggal) }}</td>
             <td class="font-semibold">{{ t.koperasi_warga?.nama }}</td>
             <td>
               <span class="badge" :class="{
@@ -64,7 +64,7 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Nominal (Rp)</label>
-            <input type="number" v-model="form.jumlah" required min="1" class="input input-bordered w-full mt-1" />
+            <input type="text" :value="formatInput(form.jumlah)" @input="handleJumlahInput" required class="input input-bordered w-full mt-1" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Keterangan</label>
@@ -114,6 +114,16 @@ const handleJenisChange = () => {
   } else {
     form.value.jumlah = ''
   }
+}
+
+const formatInput = (num) => {
+  if (!num) return ''
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+}
+
+const handleJumlahInput = (e) => {
+  let val = e.target.value.replace(/[^0-9]/g, '')
+  form.value.jumlah = val ? parseInt(val, 10) : ''
 }
 
 const submitForm = async () => {
