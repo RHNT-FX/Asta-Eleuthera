@@ -195,7 +195,7 @@ const handleAngsuranInput = (e) => {
                 </span>
               </td>
               <td class="px-6 py-4 text-right">
-                <button v-if="p.status === 'aktif'" @click="openAngsuranModal(p)" class="text-[var(--color-rt-primary)] hover:text-[var(--color-rt-primary-light)] text-sm font-medium">
+                <button v-if="p.status !== 'lunas'" @click="openAngsuranModal(p)" class="btn btn-sm text-white" style="background-color: var(--color-rt-primary, #16a34a); border: none;">
                   Bayar Angsuran
                 </button>
               </td>
