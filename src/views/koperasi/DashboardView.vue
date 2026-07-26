@@ -83,24 +83,28 @@ const totalSHU = computed(() => {
 const shuLeaderboard = computed(() => {
   const map = {}
   
-  // Aggregate data per warga
-  koperasiStore.pinjaman.forEach(p => {
-    if (!map[p.warga_id]) {
-      map[p.warga_id] = {
-        warga_id: p.warga_id,
-        nama: p.koperasi_warga?.nama || 'Unknown',
-        totalPinjam: 0,
-        kontribusiBunga: 0,
-      }
+  // Initialize all warga first
+  koperasiStore.warga.forEach(w => {
+    map[w.id] = {
+      warga_id: w.id,
+      nama: w.nama,
+      totalPinjam: 0,
+      kontribusiBunga: 0,
     }
-    const pinjam = Number(p.jumlah_pinjaman) || 0
-    const bunga = pinjam * (Number(p.bunga_persen) || 0) / 100
-    
-    map[p.warga_id].totalPinjam += pinjam
-    map[p.warga_id].kontribusiBunga += bunga
   })
 
-  // Convert to array and calculate SHU (asumsi: 50% dari bunga dikembalikan ke peminjam sebagai SHU)
+  // Aggregate data per pinjaman
+  koperasiStore.pinjaman.forEach(p => {
+    if (map[p.warga_id]) {
+      const pinjam = Number(p.jumlah_pinjaman) || 0
+      const bunga = pinjam * (Number(p.bunga_persen) || 0) / 100
+      
+      map[p.warga_id].totalPinjam += pinjam
+      map[p.warga_id].kontribusiBunga += bunga
+    }
+  })
+
+  // Convert to array and calculate SHU
   const list = Object.values(map).map(item => {
     return {
       ...item,
