@@ -27,7 +27,7 @@
             <td>{{ index + 1 }}</td>
             <td class="font-semibold">{{ w.nama }}</td>
             <td>{{ w.nik || '-' }}</td>
-            <td>{{ w.alamat || '-' }}</td>
+            <td>{{ w.blok_rumah || '-' }}</td>
             <td class="text-green-600 font-medium">{{ formatRupiah(w.total_simpanan) }}</td>
           </tr>
         </tbody>
@@ -49,7 +49,7 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Alamat / Blok</label>
-            <input type="text" v-model="form.alamat" class="input input-bordered w-full mt-1" />
+            <input type="text" v-model="form.blok_rumah" class="input input-bordered w-full mt-1" />
           </div>
           <div class="modal-action">
             <button type="button" class="btn" @click="showModal = false">Batal</button>
@@ -73,7 +73,7 @@ const showModal = ref(false)
 const form = ref({
   nama: '',
   nik: '',
-  alamat: '',
+  blok_rumah: '',
   total_simpanan: 0
 })
 
@@ -85,7 +85,7 @@ const submitForm = async () => {
   try {
     await koperasiStore.addWarga({ ...form.value })
     showModal.value = false
-    form.value = { nama: '', nik: '', alamat: '', total_simpanan: 0 }
+    form.value = { nama: '', nik: '', blok_rumah: '', total_simpanan: 0 }
   } catch (error) {
     alert('Gagal menambahkan warga: ' + error.message)
   }
