@@ -55,7 +55,8 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Jenis Transaksi</label>
-            <select v-model="form.jenis" required class="select select-bordered w-full mt-1">
+            <select v-model="form.jenis" @change="handleJenisChange" required class="select select-bordered w-full mt-1">
+              <option value="Pokok">Simpanan Pokok</option>
               <option value="Wajib">Simpanan Wajib</option>
               <option value="Sukarela">Simpanan Sukarela</option>
               <option value="Tarik">Tarik Simpanan</option>
@@ -91,7 +92,7 @@ const showModal = ref(false)
 const form = ref({
   warga_id: '',
   jenis: 'Wajib',
-  nominal: '',
+  nominal: 20000,
   keterangan: ''
 })
 
@@ -101,8 +102,18 @@ onMounted(() => {
 })
 
 const openModal = () => {
-  form.value = { warga_id: '', jenis: 'Wajib', nominal: '', keterangan: '' }
+  form.value = { warga_id: '', jenis: 'Wajib', nominal: 20000, keterangan: '' }
   showModal.value = true
+}
+
+const handleJenisChange = () => {
+  if (form.value.jenis === 'Pokok') {
+    form.value.nominal = 50000
+  } else if (form.value.jenis === 'Wajib') {
+    form.value.nominal = 20000
+  } else {
+    form.value.nominal = ''
+  }
 }
 
 const submitForm = async () => {

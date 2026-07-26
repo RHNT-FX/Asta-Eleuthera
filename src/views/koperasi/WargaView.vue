@@ -28,7 +28,14 @@
             <td class="font-semibold">{{ w.nama }}</td>
             <td>{{ w.nik || '-' }}</td>
             <td>{{ w.blok_rumah || '-' }}</td>
-            <td class="text-green-600 font-medium">{{ formatRupiah(w.total_simpanan) }}</td>
+            <td class="text-sm">
+              <div class="text-green-600 font-bold">{{ formatRupiah(w.total_simpanan) }}</div>
+              <div class="text-xs text-gray-500 mt-1">
+                Pokok: {{ formatRupiah(w.simpanan_pokok) }} <br/>
+                Wajib: {{ formatRupiah(w.simpanan_wajib) }} <br/>
+                Sukarela: {{ formatRupiah(w.simpanan_sukarela) }}
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>

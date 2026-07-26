@@ -59,18 +59,36 @@ export const useKoperasiStore = defineStore('koperasi', {
         const { data, error } = await supabase.from('koperasi_transaksi').insert([payload]).select(`*, koperasi_warga(nama)`)
         if (error) throw error
         
-        // Update total_simpanan
+        // Update total_simpanan and specific simpanan type
         const targetWarga = this.warga.find(w => w.id === payload.warga_id)
         if (targetWarga) {
           let newTotal = targetWarga.total_simpanan || 0
+          let newPokok = targetWarga.simpanan_pokok || 0
+          let newWajib = targetWarga.simpanan_wajib || 0
+          let newSukarela = targetWarga.simpanan_sukarela || 0
+
           if (payload.jenis === 'Tarik') {
             newTotal -= payload.nominal
+            newSukarela -= payload.nominal // Asumsi tarik hanya bisa ambil sukarela
           } else {
             newTotal += payload.nominal
+            if (payload.jenis === 'Pokok' || payload.jenis === 'pokok') newPokok += payload.nominal
+            if (payload.jenis === 'Wajib' || payload.jenis === 'wajib') newWajib += payload.nominal
+            if (payload.jenis === 'Sukarela' || payload.jenis === 'sukarela') newSukarela += payload.nominal
           }
-          const { error: updateError } = await supabase.from('koperasi_warga').update({ total_simpanan: newTotal }).eq('id', payload.warga_id)
+
+          const { error: updateError } = await supabase.from('koperasi_warga').update({ 
+            total_simpanan: newTotal,
+            simpanan_pokok: newPokok,
+            simpanan_wajib: newWajib,
+            simpanan_sukarela: newSukarela
+          }).eq('id', payload.warga_id)
           if (updateError) throw updateError
+          
           targetWarga.total_simpanan = newTotal
+          targetWarga.simpanan_pokok = newPokok
+          targetWarga.simpanan_wajib = newWajib
+          targetWarga.simpanan_sukarela = newSukarela
         }
         
         this.transaksi.unshift(data[0])

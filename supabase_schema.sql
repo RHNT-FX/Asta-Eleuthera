@@ -49,3 +49,11 @@ create policy "Admins can manage koperasi" on public.koperasi_warga for all to a
 create policy "Admins can manage koperasi trx" on public.koperasi_transaksi for all to authenticated using (true) with check (true);
 create policy "Admins can manage koperasi pinjaman" on public.koperasi_pinjaman for all to authenticated using (true) with check (true);
 create policy "Admins can manage koperasi angsuran" on public.koperasi_angsuran for all to authenticated using (true) with check (true);
+-- Update constraint jenis transaksi
+alter table public.koperasi_transaksi drop constraint if exists koperasi_transaksi_jenis_check;
+alter table public.koperasi_transaksi add constraint koperasi_transaksi_jenis_check check (jenis in ('pokok', 'wajib', 'sukarela', 'tarik'));
+
+-- Add columns to koperasi_warga to track separate balances
+alter table public.koperasi_warga add column simpanan_pokok numeric default 0;
+alter table public.koperasi_warga add column simpanan_wajib numeric default 0;
+alter table public.koperasi_warga add column simpanan_sukarela numeric default 0;
