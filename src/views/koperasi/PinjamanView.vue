@@ -96,8 +96,13 @@ async function handleAngsuran() {
     return
   }
   
-  saving.value = true
   const p = pinjaman.value.find(x => x.id === angsuranForm.value.pinjaman_id)
+  if (p && angsuranForm.value.jumlah_bayar > p.sisa_tagihan) {
+    toast.showToast(`Jumlah bayar melebihi sisa tagihan (${formatRupiah(p.sisa_tagihan)})`, 'error')
+    return
+  }
+  
+  saving.value = true
   
   const payload = {
     pinjaman_id: p.id,
