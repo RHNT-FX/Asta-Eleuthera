@@ -33,7 +33,7 @@
               }">{{ t.jenis }}</span>
             </td>
             <td :class="t.jenis === 'Tarik' ? 'text-red-500' : 'text-green-600'">
-              {{ t.jenis === 'Tarik' ? '-' : '+' }}{{ formatRupiah(t.nominal) }}
+              {{ t.jenis === 'Tarik' ? '-' : '+' }}{{ formatRupiah(t.jumlah) }}
             </td>
             <td>{{ t.keterangan || '-' }}</td>
           </tr>
@@ -64,7 +64,7 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Nominal (Rp)</label>
-            <input type="number" v-model="form.nominal" required min="1" class="input input-bordered w-full mt-1" />
+            <input type="number" v-model="form.jumlah" required min="1" class="input input-bordered w-full mt-1" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Keterangan</label>
@@ -92,7 +92,7 @@ const showModal = ref(false)
 const form = ref({
   warga_id: '',
   jenis: 'Wajib',
-  nominal: 20000,
+  jumlah: 20000,
   keterangan: ''
 })
 
@@ -102,17 +102,17 @@ onMounted(() => {
 })
 
 const openModal = () => {
-  form.value = { warga_id: '', jenis: 'Wajib', nominal: 20000, keterangan: '' }
+  form.value = { warga_id: '', jenis: 'Wajib', jumlah: 20000, keterangan: '' }
   showModal.value = true
 }
 
 const handleJenisChange = () => {
   if (form.value.jenis === 'Pokok') {
-    form.value.nominal = 50000
+    form.value.jumlah = 50000
   } else if (form.value.jenis === 'Wajib') {
-    form.value.nominal = 20000
+    form.value.jumlah = 20000
   } else {
-    form.value.nominal = ''
+    form.value.jumlah = ''
   }
 }
 

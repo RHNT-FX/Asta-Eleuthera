@@ -55,7 +55,7 @@ export const useKoperasiStore = defineStore('koperasi', {
       this.loading = true
       this.error = null
       try {
-        // payload: { warga_id, jenis, nominal, keterangan }
+        // payload: { warga_id, jenis, jumlah, keterangan }
         const { data, error } = await supabase.from('koperasi_transaksi').insert([payload]).select(`*, koperasi_warga(nama)`)
         if (error) throw error
         
@@ -68,13 +68,13 @@ export const useKoperasiStore = defineStore('koperasi', {
           let newSukarela = targetWarga.simpanan_sukarela || 0
 
           if (payload.jenis === 'Tarik') {
-            newTotal -= payload.nominal
-            newSukarela -= payload.nominal // Asumsi tarik hanya bisa ambil sukarela
+            newTotal -= payload.jumlah
+            newSukarela -= payload.jumlah // Asumsi tarik hanya bisa ambil sukarela
           } else {
-            newTotal += payload.nominal
-            if (payload.jenis === 'Pokok' || payload.jenis === 'pokok') newPokok += payload.nominal
-            if (payload.jenis === 'Wajib' || payload.jenis === 'wajib') newWajib += payload.nominal
-            if (payload.jenis === 'Sukarela' || payload.jenis === 'sukarela') newSukarela += payload.nominal
+            newTotal += payload.jumlah
+            if (payload.jenis === 'Pokok' || payload.jenis === 'pokok') newPokok += payload.jumlah
+            if (payload.jenis === 'Wajib' || payload.jenis === 'wajib') newWajib += payload.jumlah
+            if (payload.jenis === 'Sukarela' || payload.jenis === 'sukarela') newSukarela += payload.jumlah
           }
 
           const { error: updateError } = await supabase.from('koperasi_warga').update({ 
