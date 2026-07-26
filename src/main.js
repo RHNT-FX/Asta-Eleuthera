@@ -9,6 +9,8 @@ import { useAuthStore } from './stores/auth'
 const app = createApp(App)
 const pinia = createPinia()
 
+import { useIntersectionObserver } from '@vueuse/core'
+
 // Scroll animation directive
 const animateDirective = {
   mounted: (el) => {
@@ -16,19 +18,13 @@ const animateDirective = {
     el.style.opacity = '0'
     el.style.transform = 'translateY(24px)'
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            el.style.opacity = '1'
-            el.style.transform = 'translateY(0)'
-          }
-        })
-      },
-      { threshold: 0.1 },
-    )
-
-    observer.observe(el)
+    const { stop } = useIntersectionObserver(el, ([{ isIntersecting }]) => {
+      if (isIntersecting) {
+        el.style.opacity = '1'
+        el.style.transform = 'translateY(0)'
+        stop() // stop observing once animated
+      }
+    }, { threshold: 0.1 })
   },
 }
 

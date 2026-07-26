@@ -9,6 +9,8 @@ export const useArticleStore = defineStore('article', () => {
   const totalCount = ref(0)
   const categories = ref(['Pengumuman', 'Kegiatan', 'Info Warga', 'Edukasi', 'Umum'])
 
+  const generateSlug = (text) => text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim()
+
   const publishedArticles = computed(() =>
     articles.value.filter((a) => a.is_published),
   )
@@ -117,12 +119,7 @@ export const useArticleStore = defineStore('article', () => {
   async function createArticle(article) {
     loading.value = true
     try {
-      const slug = article.title
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .trim()
+      const slug = generateSlug(article.title)
 
       const { data, error } = await supabase
         .from('articles')
@@ -143,12 +140,7 @@ export const useArticleStore = defineStore('article', () => {
     loading.value = true
     try {
       if (updates.title) {
-        updates.slug = updates.title
-          .toLowerCase()
-          .replace(/[^a-z0-9\s-]/g, '')
-          .replace(/\s+/g, '-')
-          .replace(/-+/g, '-')
-          .trim()
+        updates.slug = generateSlug(updates.title)
       }
       updates.updated_at = new Date().toISOString()
 

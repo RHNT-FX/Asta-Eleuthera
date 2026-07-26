@@ -90,6 +90,45 @@ const router = createRouter({
       ],
     },
 
+    // ===== Koperasi Routes =====
+    {
+      path: '/koperasi/login',
+      name: 'koperasi-login',
+      component: () => import('@/views/koperasi/LoginView.vue'),
+      meta: { title: 'Login Bendahara — RT 27' },
+    },
+    {
+      path: '/koperasi',
+      component: () => import('@/layouts/KoperasiLayout.vue'),
+      meta: { requiresAuth: true, role: 'koperasi' },
+      children: [
+        {
+          path: '',
+          name: 'koperasi-dashboard',
+          component: () => import('@/views/koperasi/DashboardView.vue'),
+          meta: { title: 'Dashboard — Koperasi RT 27' },
+        },
+        {
+          path: 'warga',
+          name: 'koperasi-warga',
+          component: () => import('@/views/koperasi/WargaView.vue'),
+          meta: { title: 'Data Warga — Koperasi RT 27' },
+        },
+        {
+          path: 'simpanan',
+          name: 'koperasi-simpanan',
+          component: () => import('@/views/koperasi/SimpananView.vue'),
+          meta: { title: 'Simpanan — Koperasi RT 27' },
+        },
+        {
+          path: 'pinjaman',
+          name: 'koperasi-pinjaman',
+          component: () => import('@/views/koperasi/PinjamanView.vue'),
+          meta: { title: 'Pinjaman — Koperasi RT 27' },
+        },
+      ],
+    },
+
     // ===== 404 =====
     {
       path: '/:pathMatch(.*)*',
@@ -105,10 +144,13 @@ router.beforeEach(async (to) => {
   // Update page title
   document.title = to.meta.title || 'RT 27'
 
-  // Check auth for admin routes
+  // Check auth for protected routes
   if (to.meta.requiresAuth) {
     const authStore = useAuthStore()
     if (!authStore.isAuthenticated) {
+      if (to.meta.role === 'koperasi') {
+        return { name: 'koperasi-login', query: { redirect: to.fullPath } }
+      }
       return { name: 'admin-login', query: { redirect: to.fullPath } }
     }
   }
