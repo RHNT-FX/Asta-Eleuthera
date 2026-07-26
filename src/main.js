@@ -31,10 +31,10 @@ const animateDirective = {
 app.directive('animate', animateDirective)
 
 app.use(pinia)
-app.use(router)
 
-// Initialize auth before mounting
+// Initialize auth before mounting router
 const authStore = useAuthStore()
 authStore.initialize().then(() => {
+  app.use(router)
   app.mount('#app')
 })
