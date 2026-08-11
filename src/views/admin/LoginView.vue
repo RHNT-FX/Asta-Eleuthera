@@ -11,6 +11,7 @@ const authStore = useAuthStore()
 const email = ref('')
 const password = ref('')
 const error = ref('')
+const loading = ref(false)
 
 async function handleLogin() {
   if (!email.value || !password.value) {
@@ -19,14 +20,21 @@ async function handleLogin() {
   }
 
   error.value = ''
+  loading.value = true
   
-  const result = await authStore.login(email.value, password.value)
-  
-  if (result.success) {
-    const redirectPath = route.query.redirect || '/admin'
-    router.push(redirectPath)
-  } else {
-    error.value = result.error || 'Login gagal. Periksa kembali kredensial Anda.'
+  try {
+    const result = await authStore.login(email.value, password.value)
+    
+    if (result.success) {
+      const redirectPath = route.query.redirect || '/admin'
+      await router.push(redirectPath)
+    } else {
+      error.value = result.error || 'Login gagal. Periksa kembali kredensial Anda.'
+    }
+  } catch (err) {
+    error.value = 'Gagal memproses navigasi: ' + err.message
+  } finally {
+    loading.value = false
   }
 }
 </script>
@@ -98,10 +106,10 @@ async function handleLogin() {
 
         <button 
           type="submit" 
-          :disabled="authStore.loading"
+          :disabled="loading"
           class="w-full py-3.5 rounded-xl text-sm font-bold text-[var(--color-rt-primary)] bg-[var(--color-rt-accent)] hover:bg-white transition-all duration-300 shadow-lg shadow-[var(--color-rt-accent)]/20 disabled:opacity-70 disabled:cursor-not-allowed mt-4"
         >
-          <span v-if="!authStore.loading">Masuk</span>
+          <span v-if="!loading">Masuk</span>
           <span v-else class="flex items-center justify-center gap-2">
             <svg class="animate-spin h-5 w-5 text-[var(--color-rt-primary)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
