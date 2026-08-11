@@ -6,33 +6,6 @@ import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 const moduleStore = useModuleStore()
 const selectedCategory = ref('Semua')
 
-const sampleModules = [
-  {
-    id: '1',
-    title: 'Panduan Budidaya Bawang Dayak Lengkap',
-    description: 'Modul ini berisi panduan komprehensif mulai dari persiapan bibit, media tanam, perawatan rutin, hingga proses panen dan pasca panen bawang dayak.',
-    file_size: '2.4 MB',
-    download_count: 145,
-    category: 'Panduan'
-  },
-  {
-    id: '2',
-    title: 'Manfaat Kesehatan & Resep Olahan Bawang Dayak',
-    description: 'Buku edukasi mengenai berbagai manfaat medis bawang dayak yang telah teruji klinis beserta resep-resep olahan tradisional maupun modern.',
-    file_size: '1.8 MB',
-    download_count: 89,
-    category: 'Edukasi'
-  },
-  {
-    id: '3',
-    title: 'Pembuatan Pupuk Kompos Mandiri',
-    description: 'Panduan praktis membuat pupuk kompos organik sendiri dari limbah rumah tangga untuk menyuburkan tanaman bawang dayak Anda.',
-    file_size: '3.1 MB',
-    download_count: 210,
-    category: 'Pelatihan'
-  }
-]
-
 async function loadModules() {
   await moduleStore.fetchModules({
     category: selectedCategory.value
@@ -115,7 +88,7 @@ async function handleDownload(module) {
         <!-- Modules Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           <div
-            v-for="(module, index) in (moduleStore.modules.length > 0 ? moduleStore.modules : sampleModules)"
+            v-for="(module, index) in moduleStore.modules"
             :key="module.id"
             v-animate
             :class="`delay-${(index % 6) * 100}`"

@@ -63,7 +63,7 @@ function formatDate(dateString) {
         <div v-for="i in 3" :key="i" class="animate-pulse bg-white rounded-3xl h-[400px]"></div>
       </div>
       
-      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div v-else-if="latestArticles.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <article
           v-for="(article, index) in latestArticles"
           :key="article.id"
@@ -122,6 +122,10 @@ function formatDate(dateString) {
             </div>
           </div>
         </article>
+      </div>
+
+      <div v-else class="text-center py-16 bg-gray-50 rounded-3xl border border-gray-100">
+        <p class="text-gray-500">Belum ada artikel yang dipublikasikan.</p>
       </div>
     </div>
   </section>
