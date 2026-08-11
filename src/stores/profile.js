@@ -6,6 +6,7 @@ export const useProfileStore = defineStore('profile', () => {
   const profileData = ref({})
   const gallery = ref([])
   const loading = ref(false)
+  const errorMsg = ref(null)
 
   // Default placeholder data (dipakai sebelum Supabase terkoneksi)
   const defaults = {
@@ -63,9 +64,11 @@ export const useProfileStore = defineStore('profile', () => {
       } else {
         // Use defaults if no data in DB
         profileData.value = { ...defaults }
+        errorMsg.value = 'Data kosong dari database (RLS block atau belum ada data)'
       }
     } catch (error) {
       console.error('Fetch profile error:', error)
+      errorMsg.value = error.message || 'Unknown error'
       profileData.value = { ...defaults }
     } finally {
       loading.value = false
@@ -168,5 +171,6 @@ export const useProfileStore = defineStore('profile', () => {
     addGalleryImage,
     deleteGalleryImage,
     getProfileValue,
+    errorMsg,
   }
 })

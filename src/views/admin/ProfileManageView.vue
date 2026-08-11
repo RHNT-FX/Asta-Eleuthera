@@ -121,7 +121,11 @@ async function deleteGallery(id) {
 </script>
 
 <template>
-  <div class="max-w-4xl">
+  <div class="max-w-4xl mx-auto space-y-6">
+    <div v-if="profileStore.errorMsg" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+      <strong class="font-bold">Database Error: </strong>
+      <span class="block sm:inline">{{ profileStore.errorMsg }}</span>
+    </div>
     <!-- Header -->
     <div class="mb-8">
       <h1 class="text-2xl font-bold text-[var(--color-rt-dark)]">Kelola Profil RT</h1>
