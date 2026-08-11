@@ -105,7 +105,7 @@ const socialLinks = computed(() => [
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              <span class="text-sm text-white/50">{{ kontak?.address || 'RT 27, Kalimantan Timur' }}</span>
+              <span class="text-sm text-white/50">{{ kontak?.address || 'QWCW+3WP, Jl. Manggar Damai No.113, Manggar, Kec. Balikpapan Tim., Kota Balikpapan, Kalimantan Timur 76116' }}</span>
             </li>
             <li class="flex items-center gap-2.5">
               <svg class="w-4 h-4 text-[var(--color-rt-accent)] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

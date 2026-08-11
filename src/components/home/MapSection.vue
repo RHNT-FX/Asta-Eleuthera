@@ -40,7 +40,7 @@ onMounted(async () => {
 
   // Add marker
   const marker = L.marker([lat, lng], { icon: customIcon }).addTo(map)
-  marker.bindPopup(`<b>RT 27</b><br>${alamat?.address || 'Kalimantan Timur'}`)
+  marker.bindPopup(`<b>RT 27</b><br>${alamat?.address || 'Jl. Manggar Damai No.113, Balikpapan'}`)
 })
 
 onBeforeUnmount(() => {
@@ -74,7 +74,7 @@ onBeforeUnmount(() => {
             <h3 class="font-bold text-[var(--color-rt-dark)] text-lg">Alamat RT 27</h3>
           </div>
           <p class="text-gray-600 text-sm leading-relaxed mb-4">
-            {{ profileStore.getProfileValue('alamat')?.address || 'RT 27, Kalimantan Timur' }}
+            {{ profileStore.getProfileValue('alamat')?.address || 'QWCW+3WP, Jl. Manggar Damai No.113, Manggar, Kec. Balikpapan Tim., Kota Balikpapan, Kalimantan Timur 76116' }}
           </p>
           <a
             :href="`https://www.google.com/maps/search/?api=1&query=${profileStore.getProfileValue('alamat')?.lat || -1.2654},${profileStore.getProfileValue('alamat')?.lng || 116.8312}`"

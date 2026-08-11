@@ -35,12 +35,12 @@ export const useProfileStore = defineStore('profile', () => {
       phone: '+62 812-3456-7890',
       email: 'rt27@example.com',
       whatsapp: '6281234567890',
-      address: 'RT 27, Kalimantan Timur',
+      address: 'QWCW+3WP, Jl. Manggar Damai No.113, Manggar, Kec. Balikpapan Tim., Kota Balikpapan, Kalimantan Timur 76116',
     },
     alamat: {
-      lat: -1.2654,
-      lng: 116.8312,
-      address: 'RT 27, Kalimantan Timur',
+      lat: -1.2198,
+      lng: 116.9405,
+      address: 'QWCW+3WP, Jl. Manggar Damai No.113, Manggar, Kec. Balikpapan Tim., Kota Balikpapan, Kalimantan Timur 76116',
     },
   }
 
