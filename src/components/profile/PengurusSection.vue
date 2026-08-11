@@ -1,8 +1,9 @@
 <script setup>
+import { computed } from 'vue'
 import { useProfileStore } from '@/stores/profile'
 
 const profileStore = useProfileStore()
-const pengurus = profileStore.getProfileValue('pengurus') || []
+const pengurus = computed(() => profileStore.getProfileValue('pengurus') || [])
 
 function getInitials(name) {
   if (!name) return 'RT'

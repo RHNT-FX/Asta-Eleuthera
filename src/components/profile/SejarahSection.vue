@@ -1,8 +1,9 @@
 <script setup>
+import { computed } from 'vue'
 import { useProfileStore } from '@/stores/profile'
 
 const profileStore = useProfileStore()
-const sejarah = profileStore.getProfileValue('sejarah')
+const sejarah = computed(() => profileStore.getProfileValue('sejarah'))
 </script>
 
 <template>

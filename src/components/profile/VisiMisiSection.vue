@@ -1,8 +1,9 @@
 <script setup>
+import { computed } from 'vue'
 import { useProfileStore } from '@/stores/profile'
 
 const profileStore = useProfileStore()
-const visiMisi = profileStore.getProfileValue('visi_misi')
+const visiMisi = computed(() => profileStore.getProfileValue('visi_misi'))
 </script>
 
 <template>

@@ -1,20 +1,9 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useProfileStore } from '@/stores/profile'
 
 const profileStore = useProfileStore()
-const gallery = profileStore.gallery
-
-const sampleImages = [
-  { id: 1, image_url: 'https://images.unsplash.com/photo-1594498653385-d5172c532c00?w=800', caption: 'Kerja Bakti Warga' },
-  { id: 2, image_url: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800', caption: 'Rapat Pengurus' },
-  { id: 3, image_url: 'https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?w=800', caption: 'Kegiatan Posyandu' },
-  { id: 4, image_url: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800', caption: 'Perayaan 17 Agustus' },
-  { id: 5, image_url: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15f?w=800', caption: 'Penanaman Pohon' },
-  { id: 6, image_url: 'https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=800', caption: 'Pertemuan Rutin Bulanan' },
-]
-
-const displayImages = gallery.length > 0 ? gallery : sampleImages
+const displayImages = computed(() => profileStore.gallery)
 const selectedImage = ref(null)
 
 function openLightbox(image) {
