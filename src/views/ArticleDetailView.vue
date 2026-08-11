@@ -25,11 +25,13 @@ onMounted(async () => {
 
 function formatDate(dateString) {
   if (!dateString) return ''
+  const date = new Date(dateString)
+  if (isNaN(date.getTime())) return ''
   return new Intl.DateTimeFormat('id-ID', {
     day: 'numeric',
     month: 'long',
     year: 'numeric'
-  }).format(new Date(dateString))
+  }).format(date)
 }
 
 function copyLink() {
