@@ -1,10 +1,10 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useProfileStore } from '@/stores/profile'
 
 const profileStore = useProfileStore()
-const kontak = profileStore.getProfileValue('kontak')
+const kontak = computed(() => profileStore.getProfileValue('kontak'))
 const currentYear = new Date().getFullYear()
 
 const subscribed = ref(false)
@@ -26,11 +26,11 @@ const quickLinks = [
   { name: 'Modul Pelatihan', to: '/modul' },
 ]
 
-const socialLinks = [
+const socialLinks = computed(() => [
   { name: 'Facebook', icon: 'facebook', href: '#' },
   { name: 'Instagram', icon: 'instagram', href: '#' },
-  { name: 'WhatsApp', icon: 'whatsapp', href: `https://wa.me/${kontak?.whatsapp || '6281234567890'}` },
-]
+  { name: 'WhatsApp', icon: 'whatsapp', href: `https://wa.me/${kontak.value?.whatsapp || '6281234567890'}` },
+])
 </script>
 
 <template>
