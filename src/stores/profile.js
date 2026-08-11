@@ -54,7 +54,11 @@ export const useProfileStore = defineStore('profile', () => {
 
       if (data && data.length > 0) {
         data.forEach((item) => {
-          profileData.value[item.key] = item.value
+          try {
+            profileData.value[item.key] = typeof item.value === 'string' ? JSON.parse(item.value) : item.value
+          } catch (e) {
+            profileData.value[item.key] = item.value
+          }
         })
       } else {
         // Use defaults if no data in DB
