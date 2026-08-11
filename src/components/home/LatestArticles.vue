@@ -7,43 +7,15 @@ const articleStore = useArticleStore()
 const latestArticles = ref([])
 const loading = ref(true)
 
-const sampleArticles = [
-  {
-    id: '1',
-    slug: 'kegiatan-kerja-bakti-mingguan',
-    title: 'Kegiatan Kerja Bakti Rutin Warga RT 27',
-    excerpt: 'Kerja bakti pembersihan selokan dan lingkungan sekitar yang diikuti oleh seluruh warga RT 27 berjalan dengan lancar.',
-    category: 'Kegiatan',
-    created_at: new Date().toISOString(),
-    thumbnail_url: 'https://images.unsplash.com/photo-1594498653385-d5172c532c00?w=600'
-  },
-  {
-    id: '2',
-    slug: 'pengumuman-iuran-bulanan',
-    title: 'Pengumuman Iuran Bulanan Bulan Ini',
-    excerpt: 'Diberitahukan kepada seluruh warga bahwa iuran bulanan untuk bulan ini sudah dapat diserahkan kepada bendahara RT.',
-    category: 'Pengumuman',
-    created_at: new Date(Date.now() - 86400000).toISOString(),
-    thumbnail_url: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600'
-  },
-  {
-    id: '3',
-    slug: 'tips-menjaga-kesehatan-lingkungan',
-    title: 'Tips Menjaga Kesehatan Lingkungan Sekitar',
-    excerpt: 'Beberapa cara mudah yang bisa kita lakukan bersama untuk menjaga lingkungan RT 27 tetap bersih dan sehat.',
-    category: 'Edukasi',
-    created_at: new Date(Date.now() - 172800000).toISOString(),
-    thumbnail_url: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15f?w=600'
-  }
-]
+const sampleArticles = []
 
 onMounted(async () => {
   try {
     const articles = await articleStore.fetchLatest(3)
-    latestArticles.value = articles && articles.length > 0 ? articles : sampleArticles
+    latestArticles.value = articles || []
   } catch (error) {
     console.error(error)
-    latestArticles.value = sampleArticles
+    latestArticles.value = []
   } finally {
     loading.value = false
   }
