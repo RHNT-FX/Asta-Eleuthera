@@ -70,10 +70,6 @@ function formatDate(dateString) {
       </div>
       
       <div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
-        <div v-animate class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-6">
-          <span class="w-2 h-2 rounded-full bg-[var(--color-rt-accent)]"></span>
-          <span class="text-xs font-semibold tracking-wider text-white uppercase" style="font-family: var(--font-sans);">Pusat Informasi</span>
-        </div>
         <h1 v-animate class="delay-100 text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6" style="font-family: var(--font-serif);">
           Artikel & Berita
         </h1>

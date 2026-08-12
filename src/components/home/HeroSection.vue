@@ -20,15 +20,6 @@ import { RouterLink } from 'vue-router'
     <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[var(--color-rt-primary)]/30 rounded-full blur-[120px] pointer-events-none"></div>
 
     <div class="relative z-10 container mx-auto px-6 pt-20 pb-12 flex flex-col items-center text-center">
-      <!-- Badge -->
-      <div v-animate class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-8">
-        <span class="relative flex h-2 w-2">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-rt-accent)] opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-[var(--color-rt-accent)]"></span>
-        </span>
-        <span class="text-xs font-semibold tracking-wider text-white uppercase" style="font-family: var(--font-sans);">Portal Resmi</span>
-      </div>
-
       <!-- Heading -->
       <h1 v-animate class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight max-w-4xl" style="font-family: var(--font-serif);">
         Selamat Datang di <br /> <span class="text-[var(--color-rt-accent)]">RT 27</span>

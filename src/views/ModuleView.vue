@@ -44,12 +44,7 @@ async function handleDownload(module) {
       </div>
 
       <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
-        <div v-animate class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md mb-6">
-          <svg class="w-8 h-8 text-[var(--color-rt-accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-          </svg>
-        </div>
-        <h1 v-animate class="delay-100 text-4xl md:text-5xl font-bold mb-6" style="font-family: var(--font-serif);">
+        <h1 v-animate class="delay-100 text-4xl md:text-5xl font-bold text-white mb-6" style="font-family: var(--font-serif);">
           Modul Pelatihan
         </h1>
         <p v-animate class="delay-200 text-white/80 max-w-2xl mx-auto text-lg leading-relaxed">
