@@ -33,7 +33,7 @@ const sejarah = computed(() => profileStore.getProfileValue('sejarah'))
         <div class="lg:col-span-5 relative">
           <div v-animate class="delay-300 relative rounded-[2rem] overflow-hidden shadow-2xl aspect-[4/5]">
             <img 
-              src="https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?w=800" 
+              src="/images/sejak2010.webp" 
               alt="Sejarah RT 27" 
               class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
             />

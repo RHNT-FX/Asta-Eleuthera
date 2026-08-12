@@ -28,7 +28,7 @@ const values = [
         <div v-animate class="relative">
           <div class="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/5] lg:aspect-auto lg:h-[600px]">
             <img
-              src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800"
+              src="/images/tentangrt.webp"
               alt="Warga RT 27"
               class="w-full h-full object-cover"
             />

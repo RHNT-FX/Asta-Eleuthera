@@ -7,7 +7,7 @@ import { RouterLink } from 'vue-router'
     <!-- Background Image -->
     <div class="absolute inset-0 z-0">
       <img
-        src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=1920"
+        src="/images/herobanner.webp"
         alt="Desa RT 27"
         class="w-full h-full object-cover object-center"
       />
