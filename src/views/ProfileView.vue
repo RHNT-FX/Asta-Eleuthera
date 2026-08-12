@@ -22,7 +22,7 @@ onMounted(async () => {
     <!-- Hero Banner -->
     <section class="relative pt-32 pb-20 bg-[var(--color-rt-primary)] overflow-hidden">
       <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=1920')] bg-cover bg-center opacity-10 mix-blend-overlay"></div>
+        <div class="absolute inset-0 bg-[url('/images/herobanner.webp')] bg-cover bg-center opacity-10 mix-blend-overlay"></div>
         <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[var(--color-rt-primary)]"></div>
       </div>
       
