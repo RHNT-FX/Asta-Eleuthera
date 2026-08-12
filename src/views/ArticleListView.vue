@@ -63,9 +63,10 @@ function formatDate(dateString) {
 <template>
   <div class="min-h-screen bg-[var(--color-rt-light)] pb-24">
     <!-- Header -->
-    <section class="relative pt-32 pb-24 bg-[var(--color-rt-primary)] overflow-hidden">
+    <section class="relative pt-32 pb-24 bg-[var(--color-rt-dark)] overflow-hidden">
       <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 bg-[url('/images/herobanner.webp')] bg-cover bg-center opacity-10 mix-blend-overlay"></div>
+        <div class="absolute inset-0 bg-[url('/images/herobanner.webp')] bg-cover bg-center opacity-40"></div>
+        <div class="absolute inset-0 bg-[var(--color-rt-primary)]/60"></div>
         <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[var(--color-rt-primary)]"></div>
       </div>
       
