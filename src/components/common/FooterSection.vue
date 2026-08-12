@@ -162,10 +162,7 @@ const socialLinks = computed(() => [
     <div class="border-t border-white/5">
       <div class="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
         <p class="text-xs text-white/30">
-          © {{ currentYear }} RT 27. Dibangun dengan ❤️
-        </p>
-        <p class="text-xs text-white/20">
-          Portal Informasi Warga
+          © {{ currentYear }} By Asta EleuThera.
         </p>
       </div>
     </div>
