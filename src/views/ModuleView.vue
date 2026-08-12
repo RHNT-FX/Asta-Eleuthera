@@ -37,12 +37,11 @@ async function handleDownload(module) {
 <template>
   <div class="min-h-screen bg-[var(--color-rt-light)] pb-24">
     <!-- Header -->
-    <div class="bg-[var(--color-rt-primary)] pt-32 pb-20 relative overflow-hidden text-white">
-      <!-- Decor -->
-      <div class="absolute inset-0 opacity-10">
-        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0ibm9uZSI+PC9yZWN0Pgo8Y2lyY2xlIGN4PSIzIiBjeT0iMyIgcj0iMS41IiBmaWxsPSIjZmZmZmZmIj48L2NpcmNsZT4KPC9zdmc+')]"></div>
+    <section class="relative pt-32 pb-20 bg-[var(--color-rt-primary)] overflow-hidden">
+      <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0 bg-[url('/images/herobanner.webp')] bg-cover bg-center opacity-10 mix-blend-overlay"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[var(--color-rt-primary)]"></div>
       </div>
-      <div class="absolute -bottom-20 -right-20 w-64 h-64 bg-white/20 rounded-full blur-3xl"></div>
 
       <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
         <div v-animate class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md mb-6">
@@ -57,7 +56,7 @@ async function handleDownload(module) {
           Kumpulan materi, panduan budidaya bawang dayak, dan modul edukasi lingkungan yang dapat Anda unduh secara gratis.
         </p>
       </div>
-    </div>
+    </section>
 
     <div class="max-w-7xl mx-auto px-6 -mt-8 relative z-20">
       <!-- Categories -->

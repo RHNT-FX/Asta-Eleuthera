@@ -63,17 +63,31 @@ function formatDate(dateString) {
 <template>
   <div class="min-h-screen bg-[var(--color-rt-light)] pb-24">
     <!-- Header -->
-    <div class="bg-white pt-32 pb-12 border-b border-gray-100">
-      <div class="max-w-7xl mx-auto px-6 text-center">
-        <h1 v-animate class="text-4xl md:text-5xl font-bold text-[var(--color-rt-dark)] mb-6" style="font-family: var(--font-serif);">
+    <section class="relative pt-32 pb-24 bg-[var(--color-rt-primary)] overflow-hidden">
+      <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0 bg-[url('/images/herobanner.webp')] bg-cover bg-center opacity-10 mix-blend-overlay"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[var(--color-rt-primary)]"></div>
+      </div>
+      
+      <div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
+        <div v-animate class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-6">
+          <span class="w-2 h-2 rounded-full bg-[var(--color-rt-accent)]"></span>
+          <span class="text-xs font-semibold tracking-wider text-white uppercase" style="font-family: var(--font-sans);">Pusat Informasi</span>
+        </div>
+        <h1 v-animate class="delay-100 text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6" style="font-family: var(--font-serif);">
           Artikel & Berita
         </h1>
-        <p v-animate class="delay-100 text-gray-600 max-w-2xl mx-auto mb-10 text-lg">
+        <p v-animate class="delay-200 text-lg text-white/80 max-w-2xl mx-auto">
           Kumpulan berita, pengumuman, dan informasi edukasi seputar lingkungan RT 27.
         </p>
+      </div>
+    </section>
 
-        <!-- Search & Filter -->
-        <div v-animate class="delay-200 max-w-3xl mx-auto flex flex-col md:flex-row gap-4">
+    <!-- Content -->
+    <div class="max-w-7xl mx-auto px-6 -mt-8 relative z-20">
+      <!-- Search & Filter Card -->
+      <div class="bg-white rounded-2xl shadow-lg p-4 mb-12">
+        <div v-animate class="delay-300 max-w-4xl mx-auto flex flex-col md:flex-row gap-4">
           <div class="relative flex-1">
             <input 
               v-model="searchQuery"
@@ -105,10 +119,6 @@ function formatDate(dateString) {
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Content -->
-    <div class="max-w-7xl mx-auto px-6 mt-16">
       <div v-if="articleStore.loading" class="flex justify-center py-20">
         <LoadingSpinner size="lg" text="Memuat artikel..." />
       </div>
