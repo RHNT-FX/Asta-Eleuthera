@@ -127,6 +127,3 @@ npm run build
 ## 📄 Lisensi
 
 Proyek ini didistribusikan di bawah lisensi **MIT**. Lihat file `LICENSE` untuk informasi lebih lanjut.
-
----
-© 2025 Portal Warga RT 27. Dibuat dengan ❤️ oleh azrlb — Program KKN.
