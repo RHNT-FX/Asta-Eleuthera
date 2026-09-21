@@ -27,7 +27,7 @@ const kontak = profileStore.getProfileValue('kontak')
         Ada Pertanyaan atau Saran?
       </h2>
       <p v-animate class="delay-100 text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-        Hubungi pengurus RT 27 untuk informasi lebih lanjut mengenai layanan administrasi, laporan warga, atau kegiatan lingkungan.
+        Hubungi pengurus RT 27 Manggar untuk informasi lebih lanjut mengenai layanan administrasi, laporan warga, atau kegiatan lingkungan.
       </p>
 
       <div v-animate class="delay-200 flex flex-col sm:flex-row gap-4 justify-center">

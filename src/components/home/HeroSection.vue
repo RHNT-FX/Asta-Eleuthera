@@ -27,7 +27,7 @@ import { RouterLink } from 'vue-router'
 
       <!-- Subtext -->
       <p v-animate class="delay-100 text-lg md:text-xl text-white/80 mb-10 max-w-2xl leading-relaxed" style="font-family: var(--font-sans);">
-        Portal informasi resmi untuk seluruh warga RT 27. Temukan berita terbaru, informasi kegiatan, dan layanan komunitas kami.
+        Portal informasi resmi untuk seluruh warga RT 27 Manggar. Temukan berita terbaru, informasi kegiatan, dan layanan komunitas kami.
       </p>
 
       <!-- CTAs -->
@@ -49,8 +49,8 @@ import { RouterLink } from 'vue-router'
       <!-- Stats -->
       <div v-animate class="delay-300 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 pt-10 border-t border-white/10 w-full max-w-4xl">
         <div class="flex flex-col items-center">
-          <span class="text-3xl font-bold text-white mb-1" style="font-family: var(--font-serif);">150+</span>
-          <span class="text-sm text-white/60 font-medium tracking-wide uppercase">Kepala Keluarga</span>
+          <span class="text-3xl font-bold text-white mb-1" style="font-family: var(--font-serif);">256</span>
+          <span class="text-sm text-white/60 font-medium tracking-wide uppercase">Keluarga</span>
         </div>
         <div class="flex flex-col items-center">
           <span class="text-3xl font-bold text-white mb-1" style="font-family: var(--font-serif);">24/7</span>

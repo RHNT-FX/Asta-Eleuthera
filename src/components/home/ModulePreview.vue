@@ -31,7 +31,7 @@ function handleDownload(module) {
   <section class="py-24 bg-white relative overflow-hidden">
     <!-- Background Decor -->
     <div class="absolute top-0 right-0 w-1/2 h-full bg-[var(--color-rt-light-alt)]/50 rounded-l-[100px] pointer-events-none -z-10"></div>
-    
+
     <div class="max-w-7xl mx-auto px-6">
       <div class="text-center max-w-3xl mx-auto mb-16">
         <div v-animate class="flex items-center justify-center gap-3 mb-4">
@@ -43,7 +43,7 @@ function handleDownload(module) {
           Modul Pelatihan
         </h2>
         <p v-animate class="delay-200 text-gray-600 text-lg">
-          Download modul pelatihan penanaman bawang dayak dan materi edukasi lainnya yang disediakan oleh pengurus RT 27.
+          Download modul pelatihan penanaman bawang dayak dan materi edukasi lainnya yang disediakan oleh pengurus RT 27 Manggar.
         </p>
       </div>
 
@@ -73,15 +73,15 @@ function handleDownload(module) {
                 <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
               </svg>
             </div>
-            
+
             <h3 class="font-bold text-[var(--color-rt-dark)] text-xl leading-snug mb-3 pr-16" style="font-family: var(--font-serif);">
               {{ module.title }}
             </h3>
-            
+
             <p class="text-sm text-gray-600 mb-8 flex-1 leading-relaxed">
               {{ module.description }}
             </p>
-            
+
             <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
               <div class="flex items-center gap-4 text-xs font-medium text-gray-500">
                 <span class="flex items-center gap-1">
@@ -96,7 +96,7 @@ function handleDownload(module) {
             </div>
 
             <!-- Hover overlay button -->
-            <button 
+            <button
               @click="handleDownload(module)"
               class="absolute inset-x-6 bottom-6 bg-[var(--color-rt-primary)] text-white py-3 rounded-xl font-medium opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-lg shadow-[var(--color-rt-primary)]/20 flex items-center justify-center gap-2"
             >

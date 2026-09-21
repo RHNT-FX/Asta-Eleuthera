@@ -34,7 +34,7 @@ const values = [
             />
             <div class="absolute inset-0 bg-[var(--color-rt-primary)]/10"></div>
           </div>
-          
+
           <!-- Floating Badge -->
           <div class="absolute -bottom-8 -right-8 bg-white p-6 rounded-2xl shadow-xl border border-gray-100 max-w-[200px] animate-pulse-soft hidden sm:block">
             <div class="text-[var(--color-rt-primary)] mb-2">
@@ -52,13 +52,13 @@ const values = [
             <span class="w-12 h-1 bg-[var(--color-rt-accent)] rounded-full"></span>
             <span class="text-[var(--color-rt-primary)] font-bold tracking-wider uppercase text-sm">Tentang RT 27</span>
           </div>
-          
+
           <h2 v-animate class="delay-100 text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--color-rt-dark)] mb-6 leading-tight">
             Membangun Lingkungan yang Lebih Baik Bersama
           </h2>
-          
+
           <p v-animate class="delay-200 text-gray-600 mb-10 leading-relaxed text-lg">
-            RT 27 merupakan komunitas warga yang aktif dan peduli terhadap lingkungan. Kami berkomitmen untuk terus meningkatkan kualitas hidup warga melalui berbagai program dan kegiatan gotong royong.
+            RT 27 Manggar merupakan komunitas warga yang aktif dan peduli terhadap lingkungan. Kami berkomitmen untuk terus meningkatkan kualitas hidup warga melalui berbagai program dan kegiatan gotong royong.
           </p>
 
           <div class="space-y-6 mb-10">

@@ -162,7 +162,7 @@ const socialLinks = computed(() => [
     <div class="border-t border-white/5">
       <div class="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
         <p class="text-xs text-white/30">
-          © {{ currentYear }} By Asta EleuThera.
+          © {{ currentYear }} By Asta EleuThera.p
         </p>
       </div>
     </div>
