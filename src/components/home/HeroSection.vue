@@ -22,7 +22,7 @@ import { RouterLink } from 'vue-router'
     <div class="relative z-10 container mx-auto px-6 pt-20 pb-12 flex flex-col items-center text-center">
       <!-- Heading -->
       <h1 v-animate class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight max-w-4xl" style="font-family: var(--font-serif);">
-        Selamat Datang di <br /> <span class="text-[var(--color-rt-accent)]">RT 27</span>
+        Selamat Datang di <br /> <span class="text-[var(--color-rt-accent)]">RT 27 Manggar</span>
       </h1>
 
       <!-- Subtext -->
@@ -47,14 +47,10 @@ import { RouterLink } from 'vue-router'
       </div>
 
       <!-- Stats -->
-      <div v-animate class="delay-300 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12 pt-10 border-t border-white/10 w-full max-w-4xl">
+      <div v-animate class="delay-300 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 pt-10 border-t border-white/10 w-full max-w-4xl">
         <div class="flex flex-col items-center">
           <span class="text-3xl font-bold text-white mb-1" style="font-family: var(--font-serif);">150+</span>
           <span class="text-sm text-white/60 font-medium tracking-wide uppercase">Kepala Keluarga</span>
-        </div>
-        <div class="flex flex-col items-center">
-          <span class="text-3xl font-bold text-[var(--color-rt-accent)] mb-1" style="font-family: var(--font-serif);">Aktif</span>
-          <span class="text-sm text-white/60 font-medium tracking-wide uppercase">Gotong Royong</span>
         </div>
         <div class="flex flex-col items-center">
           <span class="text-3xl font-bold text-white mb-1" style="font-family: var(--font-serif);">24/7</span>
