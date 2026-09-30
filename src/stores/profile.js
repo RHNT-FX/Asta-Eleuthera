@@ -57,7 +57,7 @@ export const useProfileStore = defineStore('profile', () => {
         data.forEach((item) => {
           try {
             profileData.value[item.key] = typeof item.value === 'string' ? JSON.parse(item.value) : item.value
-          } catch (e) {
+          } catch {
             profileData.value[item.key] = item.value
           }
         })

@@ -34,9 +34,9 @@ const values = [
             />
             <div class="absolute inset-0 bg-[var(--color-rt-primary)]/10"></div>
           </div>
-
+          
           <!-- Floating Badge -->
-          <div class="absolute -bottom-8 -right-8 bg-white p-6 rounded-2xl shadow-xl border border-gray-100 max-w-[200px] animate-pulse-soft hidden sm:block">
+          <div class="absolute -bottom-8 -right-8 bg-white p-6 rounded-2xl shadow-xl border border-gray-100 max-w-[200px] hidden sm:block">
             <div class="text-[var(--color-rt-primary)] mb-2">
               <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
@@ -52,13 +52,13 @@ const values = [
             <span class="w-12 h-1 bg-[var(--color-rt-accent)] rounded-full"></span>
             <span class="text-[var(--color-rt-primary)] font-bold tracking-wider uppercase text-sm">Tentang RT 27</span>
           </div>
-
+          
           <h2 v-animate class="delay-100 text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--color-rt-dark)] mb-6 leading-tight">
             Membangun Lingkungan yang Lebih Baik Bersama
           </h2>
-
+          
           <p v-animate class="delay-200 text-gray-600 mb-10 leading-relaxed text-lg">
-            RT 27 Manggar merupakan komunitas warga yang aktif dan peduli terhadap lingkungan. Kami berkomitmen untuk terus meningkatkan kualitas hidup warga melalui berbagai program dan kegiatan gotong royong.
+            RT 27 merupakan komunitas warga yang aktif dan peduli terhadap lingkungan. Kami berkomitmen untuk terus meningkatkan kualitas hidup warga melalui berbagai program dan kegiatan gotong royong.
           </p>
 
           <div class="space-y-6 mb-10">

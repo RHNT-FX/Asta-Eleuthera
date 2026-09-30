@@ -80,7 +80,11 @@ async function saveModule() {
     let result
     if (formData.value.id) {
       // Update existing module
-      const { id, created_at, download_count, ...updates } = formData.value
+      const updates = { ...formData.value }
+      const id = updates.id
+      delete updates.id
+      delete updates.created_at
+      delete updates.download_count
       result = await moduleStore.updateModule(id, updates)
     } else {
       // Create new module
@@ -90,7 +94,8 @@ async function saveModule() {
         return
       }
       
-      const { id, ...newModule } = formData.value
+      const newModule = { ...formData.value }
+      delete newModule.id
       
       // If there's a file, we use createModule with file, else we just use update logic but as insert
       if (selectedFile.value) {
@@ -113,6 +118,7 @@ async function saveModule() {
       toast.showToast('Gagal menyimpan: ' + (result.error || 'Terjadi kesalahan'), 'error')
     }
   } catch (error) {
+    console.error(error)
     toast.showToast('Gagal menyimpan modul', 'error')
   } finally {
     saving.value = false

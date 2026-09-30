@@ -41,9 +41,9 @@ const sejarah = computed(() => profileStore.getProfileValue('sejarah'))
           </div>
 
           <!-- Established Badge -->
-          <div v-animate class="delay-400 absolute -bottom-10 -left-10 md:-left-16 bg-white p-8 rounded-full shadow-2xl border-8 border-[var(--color-rt-light-alt)] w-40 h-40 flex flex-col items-center justify-center animate-pulse-soft hidden sm:flex">
+          <div v-animate class="delay-400 absolute -bottom-10 -left-10 md:-left-16 bg-white p-8 rounded-full shadow-2xl border-8 border-[var(--color-rt-light-alt)] w-40 h-40 flex flex-col items-center justify-center hidden sm:flex">
             <span class="text-sm font-bold text-[var(--color-rt-secondary)] uppercase tracking-widest mb-1">Sejak</span>
-            <span class="text-4xl font-bold text-[var(--color-rt-primary)]" style="font-family: var(--font-serif);">{{ sejarah?.established_year || '2010' }}</span>
+            <span class="text-4xl font-extrabold text-[var(--color-rt-primary)] tracking-tight">{{ sejarah?.established_year || '2010' }}</span>
           </div>
         </div>
       </div>

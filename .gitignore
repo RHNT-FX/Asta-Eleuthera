@@ -34,3 +34,10 @@ coverage
 
 # Vitest
 __screenshots__/
+
+# Environment & Local Config
+.env
+.agent
+.agents/
+skills
+AGENTS.md

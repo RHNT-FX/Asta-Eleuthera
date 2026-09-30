@@ -11,7 +11,6 @@ let map = null
 onMounted(async () => {
   await profileStore.fetchProfile()
   const alamat = profileStore.getProfileValue('alamat')
-  const kontak = profileStore.getProfileValue('kontak')
   
   const lat = alamat?.lat || -1.2654
   const lng = alamat?.lng || 116.8312

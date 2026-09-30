@@ -21,12 +21,12 @@ import { RouterLink } from 'vue-router'
 
     <div class="relative z-10 container mx-auto px-6 pt-20 pb-12 flex flex-col items-center text-center">
       <!-- Heading -->
-      <h1 v-animate class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight max-w-4xl" style="font-family: var(--font-serif);">
-        Selamat Datang di <br /> <span class="text-[var(--color-rt-accent)]">RT 27 Manggar</span>
+      <h1 v-animate class="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-[1.12] tracking-tight max-w-4xl drop-shadow-md">
+        Selamat Datang di <br /> <span class="text-[var(--color-rt-accent)] font-black">RT 27 Manggar</span>
       </h1>
 
       <!-- Subtext -->
-      <p v-animate class="delay-100 text-lg md:text-xl text-white/80 mb-10 max-w-2xl leading-relaxed" style="font-family: var(--font-sans);">
+      <p v-animate class="delay-100 text-lg md:text-xl text-white/90 mb-10 max-w-2xl leading-relaxed font-normal">
         Portal informasi resmi untuk seluruh warga RT 27 Manggar. Temukan berita terbaru, informasi kegiatan, dan layanan komunitas kami.
       </p>
 
@@ -34,13 +34,13 @@ import { RouterLink } from 'vue-router'
       <div v-animate class="delay-200 flex flex-col sm:flex-row gap-4 mb-20 w-full sm:w-auto">
         <RouterLink
           to="/profil"
-          class="px-8 py-3.5 rounded-xl font-semibold text-white border-2 border-white/30 hover:border-white hover:bg-white/10 transition-all duration-300 w-full sm:w-auto backdrop-blur-sm"
+          class="px-8 py-3.5 rounded-xl font-bold text-white border-2 border-white/30 hover:border-white hover:bg-white/10 transition-all duration-300 w-full sm:w-auto backdrop-blur-sm"
         >
           Lihat Profil
         </RouterLink>
         <RouterLink
           to="/artikel"
-          class="px-8 py-3.5 rounded-xl font-semibold text-[var(--color-rt-dark)] bg-white hover:bg-[var(--color-rt-light)] transition-all duration-300 w-full sm:w-auto shadow-lg shadow-white/10 hover:shadow-white/20 hover:-translate-y-1"
+          class="px-8 py-3.5 rounded-xl font-bold text-[var(--color-rt-dark)] bg-white hover:bg-[var(--color-rt-light)] transition-all duration-300 w-full sm:w-auto shadow-lg shadow-white/10 hover:shadow-white/20 hover:-translate-y-1"
         >
           Baca Artikel
         </RouterLink>
@@ -49,12 +49,12 @@ import { RouterLink } from 'vue-router'
       <!-- Stats -->
       <div v-animate class="delay-300 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 pt-10 border-t border-white/10 w-full max-w-4xl">
         <div class="flex flex-col items-center">
-          <span class="text-3xl font-bold text-white mb-1" style="font-family: var(--font-serif);">256</span>
-          <span class="text-sm text-white/60 font-medium tracking-wide uppercase">Keluarga</span>
+          <span class="text-4xl sm:text-5xl font-black text-white mb-1 tracking-tight drop-shadow-sm">256</span>
+          <span class="text-xs sm:text-sm text-white/70 font-semibold tracking-wider uppercase">Keluarga</span>
         </div>
         <div class="flex flex-col items-center">
-          <span class="text-3xl font-bold text-white mb-1" style="font-family: var(--font-serif);">24/7</span>
-          <span class="text-sm text-white/60 font-medium tracking-wide uppercase">Informasi Terkini</span>
+          <span class="text-4xl sm:text-5xl font-black text-white mb-1 tracking-tight drop-shadow-sm">24/7</span>
+          <span class="text-xs sm:text-sm text-white/70 font-semibold tracking-wider uppercase">Informasi Terkini</span>
         </div>
       </div>
     </div>

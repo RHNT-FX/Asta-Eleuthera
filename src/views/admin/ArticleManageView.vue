@@ -67,10 +67,17 @@ async function saveArticle() {
   try {
     let result
     if (formData.value.id) {
-      const { id, created_at, slug, views, author_name, ...updates } = formData.value
+      const updates = { ...formData.value }
+      const id = updates.id
+      delete updates.id
+      delete updates.created_at
+      delete updates.slug
+      delete updates.views
+      delete updates.author_name
       result = await articleStore.updateArticle(id, updates)
     } else {
-      const { id, ...newArticle } = formData.value
+      const newArticle = { ...formData.value }
+      delete newArticle.id
       result = await articleStore.createArticle(newArticle)
     }
 
@@ -82,6 +89,7 @@ async function saveArticle() {
       toast.showToast('Gagal menyimpan: ' + (result.error || 'Terjadi kesalahan'), 'error')
     }
   } catch (error) {
+    console.error(error)
     toast.showToast('Gagal menyimpan artikel', 'error')
   } finally {
     saving.value = false

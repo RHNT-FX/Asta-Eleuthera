@@ -52,6 +52,7 @@ async function handleSaveProfile(key, data, successMessage) {
       toast.showToast('Gagal menyimpan: ' + (result.error || 'Unknown error'), 'error')
     }
   } catch (error) {
+    console.error(error)
     toast.showToast('Terjadi kesalahan saat menyimpan', 'error')
   } finally {
     saving.value = false
@@ -101,6 +102,7 @@ async function uploadGallery() {
       toast.showToast('Gagal upload: ' + (result.error || 'Unknown error'), 'error')
     }
   } catch (error) {
+    console.error(error)
     toast.showToast('Terjadi kesalahan saat upload foto', 'error')
   } finally {
     saving.value = false

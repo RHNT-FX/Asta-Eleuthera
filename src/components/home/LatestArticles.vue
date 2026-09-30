@@ -7,8 +7,6 @@ const articleStore = useArticleStore()
 const latestArticles = ref([])
 const loading = ref(true)
 
-const sampleArticles = []
-
 onMounted(async () => {
   try {
     const articles = await articleStore.fetchLatest(3)

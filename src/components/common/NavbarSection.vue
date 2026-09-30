@@ -37,12 +37,13 @@ onUnmounted(() => {
     :class="scrolled ? 'w-[90%] max-w-5xl' : 'w-[95%] max-w-6xl'"
   >
     <div
-      class="rounded-2xl border transition-all duration-500 px-4 sm:px-6 py-3"
-      :class="
+      class="border transition-all duration-500 px-4 sm:px-6 py-2.5"
+      :class="[
         scrolled
-          ? 'bg-white/90 backdrop-blur-xl border-gray-200/60 shadow-lg shadow-black/5'
-          : 'bg-white/70 backdrop-blur-md border-white/30 shadow-md shadow-black/3'
-      "
+          ? 'bg-white/80 backdrop-blur-md border-white/50 shadow-lg shadow-black/[0.04]'
+          : 'bg-white/70 backdrop-blur-sm border-white/40 shadow-md shadow-black/[0.03]',
+        mobileOpen ? 'rounded-3xl' : 'rounded-full'
+      ]"
     >
       <div class="flex items-center justify-between">
         <!-- Logo -->
@@ -50,25 +51,25 @@ onUnmounted(() => {
           <img
             src="/images/AE1.png"
             alt="Logo RT 27"
-            class="w-9 h-9 rounded-xl transition-transform duration-300 group-hover:scale-110"
+            class="w-8 h-8 rounded-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
           <div class="leading-tight">
-            <span class="text-base font-bold text-[var(--color-rt-dark)] tracking-tight">RT 27</span>
-            <span class="block text-[10px] text-[var(--color-rt-secondary)] font-medium -mt-0.5">Portal Warga</span>
+            <span class="text-base font-extrabold text-[var(--color-rt-dark)] tracking-tight">RT 27</span>
+            <span class="block text-[10px] text-[var(--color-rt-secondary)] font-semibold -mt-0.5">Portal Warga</span>
           </div>
         </RouterLink>
 
         <!-- Desktop Nav Links -->
-        <div class="hidden md:flex items-center gap-1">
+        <div class="hidden md:flex items-center gap-1 bg-black/[0.03] p-1 rounded-full border border-black/[0.02]">
           <RouterLink
             v-for="link in navLinks"
             :key="link.to"
             :to="link.to"
-            class="px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200"
+            class="px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-200"
             :class="
               route.path === link.to || (link.to !== '/' && route.path.startsWith(link.to))
-                ? 'text-[var(--color-rt-primary)] bg-[var(--color-rt-accent)]/20'
-                : 'text-[var(--color-rt-secondary)] hover:text-[var(--color-rt-primary)] hover:bg-[var(--color-rt-light-alt)]'
+                ? 'text-[var(--color-rt-primary)] bg-white shadow-xs font-bold'
+                : 'text-[var(--color-rt-secondary)] hover:text-[var(--color-rt-primary)] hover:bg-white/60'
             "
           >
             {{ link.name }}
@@ -79,7 +80,7 @@ onUnmounted(() => {
         <div class="hidden md:flex items-center gap-3">
           <RouterLink
             to="/admin/login"
-            class="px-5 py-2 rounded-xl text-sm font-semibold text-white bg-[var(--color-rt-primary)] hover:bg-[var(--color-rt-primary-light)] transition-all duration-200 hover:shadow-lg hover:shadow-[var(--color-rt-primary)]/20"
+            class="px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-white bg-[var(--color-rt-primary)] hover:bg-[var(--color-rt-primary-light)] transition-all duration-200 hover:shadow-md hover:shadow-[var(--color-rt-primary)]/20 active:scale-95"
           >
             Admin
           </RouterLink>
@@ -87,7 +88,7 @@ onUnmounted(() => {
 
         <!-- Mobile Hamburger -->
         <button
-          class="md:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors"
+          class="md:hidden p-2 rounded-full hover:bg-black/5 transition-colors"
           @click="mobileOpen = !mobileOpen"
           :aria-label="mobileOpen ? 'Tutup menu' : 'Buka menu'"
         >
@@ -125,10 +126,10 @@ onUnmounted(() => {
               v-for="link in navLinks"
               :key="link.to"
               :to="link.to"
-              class="block px-4 py-2.5 rounded-xl text-sm font-semibold transition-all"
+              class="block px-4 py-2.5 rounded-2xl text-sm font-semibold transition-all"
               :class="
                 route.path === link.to || (link.to !== '/' && route.path.startsWith(link.to))
-                  ? 'text-[var(--color-rt-primary)] bg-[var(--color-rt-accent)]/20'
+                  ? 'text-[var(--color-rt-primary)] bg-[var(--color-rt-accent)]/20 font-bold'
                   : 'text-[var(--color-rt-secondary)] hover:text-[var(--color-rt-primary)] hover:bg-[var(--color-rt-light-alt)]'
               "
               @click="closeMobile"
@@ -137,7 +138,7 @@ onUnmounted(() => {
             </RouterLink>
             <RouterLink
               to="/admin/login"
-              class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-[var(--color-rt-primary)] text-center mt-2"
+              class="block px-4 py-2.5 rounded-2xl text-sm font-bold text-white bg-[var(--color-rt-primary)] text-center mt-2 shadow-xs"
               @click="closeMobile"
             >
               Admin

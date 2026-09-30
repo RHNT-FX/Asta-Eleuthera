@@ -1,7 +1,5 @@
 <script setup>
-import { ref } from 'vue'
-
-const props = defineProps({
+defineProps({
   size: { type: String, default: 'md' },
   text: { type: String, default: 'Memuat...' },
 })

@@ -10,8 +10,6 @@ const selectedCategory = ref('Semua')
 const currentPage = ref(1)
 const itemsPerPage = 6
 
-const sampleArticles = []
-
 async function loadArticles() {
   await articleStore.fetchArticles({
     page: currentPage.value,

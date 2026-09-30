@@ -129,6 +129,7 @@ export const useModuleStore = defineStore('module', () => {
 
       return { total, totalDownloads }
     } catch (error) {
+      console.error('Get stats error:', error)
       return { total: 0, totalDownloads: 0 }
     }
   }
