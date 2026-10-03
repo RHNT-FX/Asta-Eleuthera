@@ -3,7 +3,7 @@
     <h1 class="text-2xl font-bold mb-6" style="color: var(--color-rt-primary, #16a34a)">Dashboard Koperasi</h1>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div class="p-6 bg-white rounded shadow-sm border-l-4" style="border-color: var(--color-rt-primary, #16a34a)">
-        <h3 class="text-gray-500 text-sm font-semibold uppercase">Total Kas (Simpanan)</h3>
+        <h3 class="text-gray-500 text-sm font-semibold uppercase">Saldo Kas Tersedia</h3>
         <p class="text-3xl font-bold mt-2">{{ formatRupiah(totalKas) }}</p>
       </div>
       <div class="p-6 bg-white rounded shadow-sm border-l-4 border-yellow-500">
@@ -67,7 +67,12 @@ onMounted(async () => {
 })
 
 const totalKas = computed(() => {
-  return koperasiStore.warga.reduce((sum, w) => sum + (Number(w.total_simpanan) || 0), 0)
+  const totalSimpanan = koperasiStore.warga.reduce((sum, w) => sum + (Number(w.total_simpanan) || 0), 0)
+  const kasFisik = totalSimpanan + koperasiStore.pinjaman.reduce((sum, p) => {
+    const bunga = Number(p.jumlah_pinjaman) * (Number(p.bunga_persen) || 0) / 100
+    return sum + bunga - (Number(p.sisa_tagihan) || 0)
+  }, 0)
+  return kasFisik
 })
 
 const totalPinjamanAktif = computed(() => {
