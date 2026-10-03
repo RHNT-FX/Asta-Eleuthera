@@ -167,6 +167,88 @@ export const useKoperasiStore = defineStore('koperasi', {
       } finally {
         this.loading = false
       }
+    },
+    async deleteWarga(id) {
+      this.loading = true
+      this.error = null
+      try {
+        const { error } = await supabase.from('koperasi_warga').delete().eq('id', id)
+        if (error) throw error
+        this.warga = this.warga.filter(w => w.id !== id)
+        return { success: true }
+      } catch (err) {
+        this.error = err.message
+        return { success: false, error: err.message }
+      } finally {
+        this.loading = false
+      }
+    },
+    async deleteTransaksi(id) {
+      this.loading = true
+      this.error = null
+      try {
+        const transaksi = this.transaksi.find(t => t.id === id)
+        if (!transaksi) throw new Error('Transaksi not found')
+
+        // Revert the total in warga
+        const targetWarga = this.warga.find(w => w.id === transaksi.warga_id)
+        if (targetWarga) {
+          let newTotal = targetWarga.total_simpanan || 0
+          let newPokok = targetWarga.simpanan_pokok || 0
+          let newWajib = targetWarga.simpanan_wajib || 0
+          let newSukarela = targetWarga.simpanan_sukarela || 0
+
+          if (transaksi.jenis === 'Tarik') {
+            newTotal += transaksi.jumlah
+            newSukarela += transaksi.jumlah
+          } else {
+            newTotal -= transaksi.jumlah
+            if (transaksi.jenis === 'Pokok' || transaksi.jenis === 'pokok') newPokok -= transaksi.jumlah
+            if (transaksi.jenis === 'Wajib' || transaksi.jenis === 'wajib') newWajib -= transaksi.jumlah
+            if (transaksi.jenis === 'Sukarela' || transaksi.jenis === 'sukarela') newSukarela -= transaksi.jumlah
+          }
+
+          const { error: updateError } = await supabase.from('koperasi_warga').update({ 
+            total_simpanan: newTotal,
+            simpanan_pokok: newPokok,
+            simpanan_wajib: newWajib,
+            simpanan_sukarela: newSukarela
+          }).eq('id', transaksi.warga_id)
+          
+          if (updateError) throw updateError
+
+          targetWarga.total_simpanan = newTotal
+          targetWarga.simpanan_pokok = newPokok
+          targetWarga.simpanan_wajib = newWajib
+          targetWarga.simpanan_sukarela = newSukarela
+        }
+
+        const { error: deleteError } = await supabase.from('koperasi_transaksi').delete().eq('id', id)
+        if (deleteError) throw deleteError
+        
+        this.transaksi = this.transaksi.filter(t => t.id !== id)
+        return { success: true }
+      } catch (err) {
+        this.error = err.message
+        return { success: false, error: err.message }
+      } finally {
+        this.loading = false
+      }
+    },
+    async deletePinjaman(id) {
+      this.loading = true
+      this.error = null
+      try {
+        const { error } = await supabase.from('koperasi_pinjaman').delete().eq('id', id)
+        if (error) throw error
+        this.pinjaman = this.pinjaman.filter(p => p.id !== id)
+        return { success: true }
+      } catch (err) {
+        this.error = err.message
+        return { success: false, error: err.message }
+      } finally {
+        this.loading = false
+      }
     }
   }
 })

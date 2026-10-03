@@ -14,14 +14,15 @@
             <th>NIK / KTP</th>
             <th>Alamat / Blok</th>
             <th>Total Simpanan</th>
+            <th>Aksi</th>
           </tr>
         </thead>
         <tbody>
           <tr v-if="koperasiStore.loading && koperasiStore.warga.length === 0">
-            <td colspan="5" class="text-center py-4">Loading...</td>
+            <td colspan="6" class="text-center py-4">Loading...</td>
           </tr>
           <tr v-else-if="koperasiStore.warga.length === 0">
-            <td colspan="5" class="text-center py-4">Belum ada data warga.</td>
+            <td colspan="6" class="text-center py-4">Belum ada data warga.</td>
           </tr>
           <tr v-for="(w, index) in koperasiStore.warga" :key="w.id" class="hover">
             <td>{{ index + 1 }}</td>
@@ -35,6 +36,9 @@
                 Wajib: {{ formatRupiah(w.simpanan_wajib) }} <br/>
                 Sukarela: {{ formatRupiah(w.simpanan_sukarela) }}
               </div>
+            </td>
+            <td>
+              <button @click="handleDelete(w.id)" class="btn btn-sm btn-error btn-outline">Hapus</button>
             </td>
           </tr>
         </tbody>
@@ -95,6 +99,15 @@ const submitForm = async () => {
     form.value = { nama: '', nik: '', blok_rumah: '', total_simpanan: 0 }
   } catch (error) {
     alert('Gagal menambahkan warga: ' + error.message)
+  }
+}
+
+const handleDelete = async (id) => {
+  if (confirm('Yakin ingin menghapus data warga ini? Peringatan: Pastikan warga ini belum memiliki riwayat simpanan atau pinjaman.')) {
+    const res = await koperasiStore.deleteWarga(id)
+    if (!res.success) {
+      alert('Gagal menghapus: ' + res.error)
+    }
   }
 }
 

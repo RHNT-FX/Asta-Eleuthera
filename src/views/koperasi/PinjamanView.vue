@@ -147,6 +147,18 @@ const handleAngsuranInput = (e) => {
   let val = e.target.value.replace(/[^0-9]/g, '')
   angsuranForm.value.jumlah_bayar = val ? parseInt(val, 10) : ''
 }
+
+const handleDelete = async (id) => {
+  if (confirm('Yakin ingin menghapus data pinjaman ini? Data akan terhapus permanen dari database.')) {
+    const res = await koperasiStore.deletePinjaman(id)
+    if (res.success) {
+      toast.showToast('Pinjaman berhasil dihapus', 'success')
+      await loadData()
+    } else {
+      toast.showToast('Gagal menghapus: ' + res.error, 'error')
+    }
+  }
+}
 </script>
 
 <template>
@@ -194,9 +206,12 @@ const handleAngsuranInput = (e) => {
                   {{ p.status }}
                 </span>
               </td>
-              <td class="px-6 py-4 text-right">
+              <td class="px-6 py-4 text-right flex justify-end gap-2">
                 <button v-if="p.status !== 'lunas'" @click="openAngsuranModal(p)" class="btn btn-sm text-white" style="background-color: var(--color-rt-primary, #16a34a); border: none;">
-                  Bayar Angsuran
+                  Bayar
+                </button>
+                <button @click="handleDelete(p.id)" class="btn btn-sm btn-error btn-outline">
+                  Hapus
                 </button>
               </td>
             </tr>

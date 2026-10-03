@@ -14,14 +14,15 @@
             <th>Jenis</th>
             <th>Nominal</th>
             <th>Keterangan</th>
+            <th>Aksi</th>
           </tr>
         </thead>
         <tbody>
           <tr v-if="koperasiStore.loading && koperasiStore.transaksi.length === 0">
-            <td colspan="5" class="text-center py-4">Loading...</td>
+            <td colspan="6" class="text-center py-4">Loading...</td>
           </tr>
           <tr v-else-if="koperasiStore.transaksi.length === 0">
-            <td colspan="5" class="text-center py-4">Belum ada transaksi.</td>
+            <td colspan="6" class="text-center py-4">Belum ada transaksi.</td>
           </tr>
           <tr v-for="t in koperasiStore.transaksi" :key="t.id" class="hover">
             <td>{{ formatDate(t.tanggal) }}</td>
@@ -36,6 +37,9 @@
               {{ t.jenis === 'Tarik' ? '-' : '+' }}{{ formatRupiah(t.jumlah) }}
             </td>
             <td>{{ t.keterangan || '-' }}</td>
+            <td>
+              <button @click="handleDelete(t.id)" class="btn btn-sm btn-error btn-outline">Hapus</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -132,6 +136,15 @@ const submitForm = async () => {
     showModal.value = false
   } catch (error) {
     alert('Gagal menambahkan transaksi: ' + error.message)
+  }
+}
+
+const handleDelete = async (id) => {
+  if (confirm('Yakin ingin menghapus transaksi ini? Data di database akan ikut terhapus dan saldo warga akan disesuaikan kembali.')) {
+    const res = await koperasiStore.deleteTransaksi(id)
+    if (!res.success) {
+      alert('Gagal menghapus: ' + res.error)
+    }
   }
 }
 
