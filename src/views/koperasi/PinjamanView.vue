@@ -58,6 +58,12 @@ async function handleCreatePinjaman() {
     return
   }
   
+  const totalKas = koperasiStore.warga.reduce((sum, w) => sum + (Number(w.total_simpanan) || 0), 0)
+  if (createForm.value.jumlah_pinjaman > totalKas) {
+    toast.showToast(`Pinjaman ditolak! Jumlah melebihi total seluruh kas/simpanan saat ini (${formatRupiah(totalKas)})`, 'error')
+    return
+  }
+
   saving.value = true
   const totalKembalikan = Number(createForm.value.jumlah_pinjaman) + (Number(createForm.value.jumlah_pinjaman) * Number(createForm.value.bunga_persen) / 100)
   
