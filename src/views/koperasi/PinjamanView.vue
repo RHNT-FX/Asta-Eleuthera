@@ -236,13 +236,13 @@ const handleDelete = async (id) => {
             <label class="block text-sm font-medium text-gray-700 mb-1">Jumlah Pinjaman (Rp)</label>
             <input type="text" :value="formatInput(createForm.jumlah_pinjaman)" @input="handlePinjamanInput" required class="w-full rounded-xl border-gray-200 px-4 py-2 border" />
             <p v-if="createForm.jumlah_pinjaman > 0" class="text-xs text-purple-600 mt-1 font-medium">
-              + SHU/Laba Kas (10%): {{ formatRupiah(createForm.jumlah_pinjaman * 10 / 100) }}
+              + SHU/Laba Kas ({{ createForm.bunga_persen }}%): {{ formatRupiah(createForm.jumlah_pinjaman * createForm.bunga_persen / 100) }}
             </p>
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Jasa/Bunga (%)</label>
-              <input v-model.number="createForm.bunga_persen" type="number" readonly class="w-full rounded-xl border-gray-200 bg-gray-50 px-4 py-2 border" />
+              <input v-model.number="createForm.bunga_persen" type="number" step="0.1" class="w-full rounded-xl border-gray-200 px-4 py-2 border focus:ring focus:ring-green-100" />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Tenor (Bulan)</label>
