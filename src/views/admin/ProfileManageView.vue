@@ -29,7 +29,7 @@ onMounted(async () => {
   visiMisi.value = JSON.parse(JSON.stringify(profileStore.getProfileValue('visi_misi') || { visi: '', misi: [''] }))
   sejarah.value = JSON.parse(JSON.stringify(profileStore.getProfileValue('sejarah') || { content: '', established_year: '' }))
   pengurus.value = JSON.parse(JSON.stringify(profileStore.getProfileValue('pengurus') || []))
-  kontak.value = JSON.parse(JSON.stringify(profileStore.getProfileValue('kontak') || { whatsapp: '', email: '', phone: '', address: '', lat: -1.2654, lng: 116.8312 }))
+  kontak.value = { whatsapp: '', email: '', phone: '', address: '', lat: -1.2654, lng: 116.8312, ...JSON.parse(JSON.stringify(profileStore.getProfileValue('kontak') || {})) }
   gallery.value = profileStore.gallery || []
 })
 
