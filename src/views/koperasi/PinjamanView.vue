@@ -174,7 +174,7 @@ const handleDelete = async (id) => {
 
 <template>
   <div>
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
       <h1 class="text-2xl font-bold text-[var(--color-rt-dark)]">Kelola Pinjaman</h1>
       <button @click="openCreateModal" class="bg-[var(--color-rt-primary)] text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-[var(--color-rt-primary-light)]">
         + Buat Pinjaman
@@ -217,7 +217,7 @@ const handleDelete = async (id) => {
                   {{ p.status }}
                 </span>
               </td>
-              <td class="px-6 py-4 text-right flex justify-end gap-2">
+              <td class="px-6 py-4 text-right flex justify-end gap-2 whitespace-nowrap">
                 <button v-if="p.status !== 'lunas'" @click="openAngsuranModal(p)" class="btn btn-sm text-white" style="background-color: var(--color-rt-primary, #16a34a); border: none;">
                   Bayar
                 </button>
@@ -250,7 +250,7 @@ const handleDelete = async (id) => {
               + SHU/Laba Kas ({{ createForm.bunga_persen }}%): {{ formatRupiah(createForm.jumlah_pinjaman * createForm.bunga_persen / 100) }}
             </p>
           </div>
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Jasa/Bunga (%)</label>
               <input v-model.number="createForm.bunga_persen" type="number" step="0.1" class="w-full rounded-xl border-gray-200 px-4 py-2 border focus:ring focus:ring-green-100" />

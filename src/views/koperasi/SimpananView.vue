@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
       <h1 class="text-2xl font-bold" style="color: var(--color-rt-primary, #16a34a)">Data Simpanan</h1>
       <button @click="openModal" class="btn text-white" style="background-color: var(--color-rt-primary, #16a34a); border: none;">Tambah Transaksi</button>
     </div>
