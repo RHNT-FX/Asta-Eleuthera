@@ -78,17 +78,21 @@ export const useProfileStore = defineStore('profile', () => {
   async function updateProfile(key, value) {
     loading.value = true
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('profile_settings')
         .upsert(
           { key, value, updated_at: new Date().toISOString() },
-          { onConflict: 'key' },
+          { onConflict: 'key' }
         )
+        .select()
 
       if (error) throw error
+      if (!data || data.length === 0) throw new Error('Data tidak tersimpan di database. Mungkin terhalang aturan keamanan (RLS).')
+      
       profileData.value[key] = value
       return { success: true }
     } catch (error) {
+      console.error('Update profile error:', error)
       return { success: false, error: error.message }
     } finally {
       loading.value = false
