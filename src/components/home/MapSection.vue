@@ -10,10 +10,10 @@ let map = null
 
 onMounted(async () => {
   await profileStore.fetchProfile()
-  const alamat = profileStore.getProfileValue('alamat')
+  const kontak = profileStore.getProfileValue('kontak')
   
-  const lat = alamat?.lat || -1.2654
-  const lng = alamat?.lng || 116.8312
+  const lat = kontak?.lat || -1.2198
+  const lng = kontak?.lng || 116.9405
 
   // Initialize map
   map = L.map(mapContainer.value, {
@@ -39,7 +39,7 @@ onMounted(async () => {
 
   // Add marker
   const marker = L.marker([lat, lng], { icon: customIcon }).addTo(map)
-  marker.bindPopup(`<b>RT 27</b><br>${alamat?.address || 'Jl. Manggar Damai No.113, Balikpapan'}`)
+  marker.bindPopup(`<b>RT 27</b><br>${kontak?.address || 'Jl. Manggar Damai No.113, Balikpapan'}`)
 })
 
 onBeforeUnmount(() => {
@@ -73,10 +73,10 @@ onBeforeUnmount(() => {
             <h3 class="font-bold text-[var(--color-rt-dark)] text-lg">Alamat RT 27</h3>
           </div>
           <p class="text-gray-600 text-sm leading-relaxed mb-4">
-            {{ profileStore.getProfileValue('alamat')?.address || 'QWCW+3WP, Jl. Manggar Damai No.113, Manggar, Kec. Balikpapan Tim., Kota Balikpapan, Kalimantan Timur 76116' }}
+            {{ profileStore.getProfileValue('kontak')?.address || 'QWCW+3WP, Jl. Manggar Damai No.113, Manggar, Kec. Balikpapan Tim., Kota Balikpapan, Kalimantan Timur 76116' }}
           </p>
           <a
-            :href="`https://www.google.com/maps/search/?api=1&query=${profileStore.getProfileValue('alamat')?.lat || -1.2654},${profileStore.getProfileValue('alamat')?.lng || 116.8312}`"
+            :href="`https://www.google.com/maps/search/?api=1&query=${profileStore.getProfileValue('kontak')?.lat || -1.2198},${profileStore.getProfileValue('kontak')?.lng || 116.9405}`"
             target="_blank"
             rel="noopener"
             class="text-[var(--color-rt-primary)] font-semibold text-sm hover:underline flex items-center gap-1"
